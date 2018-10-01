@@ -11,4 +11,5 @@ const config = {
 
 const app = firebase.initializeApp(config)
 
-export const storageRef = app.storage().ref()
+export const modelsRef = app.storage().ref().child('models')
+export const auth = app.auth()

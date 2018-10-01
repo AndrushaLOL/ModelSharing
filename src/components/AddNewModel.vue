@@ -1,29 +1,38 @@
 <template>
     <div>
-     <input type="file" @change="this.files = $event.target.files">
-     <div v-for="file in files" :key="file.name">
-         <span>{{ file.name }}</span>
-     </div>
-     <button @click="addModel"></button> 
+     <input type="file" @change="filesChange($event.target.files)">
+     <span>{{file.name}}</span>
+     <span>{{this.$root.$data.user.toString()[0, 10]+'...'}}</span>
+     <button @click="addModel">upload</button> 
     </div>    
 </template>
 
 <script>
-import {storageRef} from '@/firebase'
+import {modelsRef} from '@/firebase'
 
 export default {
     name: 'AddNewModel',
     data () {
         return {
-            files: []
+            file: {},
+            url: ''
         }
     },
 
     methods: {
+        filesChange(files) {
+            this.file = files[0]
+        },
+
         addModel() {
-            for(let file of this.files) {
-                storageRef.child(file.name).put(file)    
-            }
+
+            const uploadTask = modelsRef.child(this.file.name).put(this.file)
+            //   .then((snapshot) => {
+            //       this.url = snapshot.ref.getDownloadURL()
+            //   })
+            uploadTask.on('state_changed', (snapshot) => {
+                console.log(snapshot.totalBytesTransferred)
+            })
         }
     }
 }

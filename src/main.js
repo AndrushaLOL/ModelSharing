@@ -8,11 +8,6 @@ import {auth} from './firebase'
  
 Vue.use(Vuetify)
 
-
-
-
-
-
 Vue.config.productionTip = false
 
 new Vue({
@@ -22,10 +17,6 @@ new Vue({
   router,
   render: h => h(App),
   created () {
-    if (auth.currentUser) {
-      this.user = auth.currentUser
-    } else {
-      this.user = auth.signInWithEmailAndPassword('andrey@mail.ru', '123456')
-    }
+    this.user = auth.currentUser || null
   }
 }).$mount('#app')

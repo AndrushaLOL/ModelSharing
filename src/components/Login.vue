@@ -11,7 +11,7 @@
                 <v-card-text>
                   <v-form>
                     <v-text-field label="Email"  v-model="email" prepend-icon="person" @input="err=''" type="email"></v-text-field>
-                    <v-text-field id="password" prepend-icon="lock" name="password" label="Password" type="password" 
+                    <v-text-field id="password" prepend-icon="lock" name="password" label="Password"
                     v-model="password" 
                     @keyup.enter="signIn" 
                     @input="err = ''"
@@ -56,13 +56,17 @@ export default {
   },
   computed: {
     user () {
-      return this.$root.data.user
+      return this.$root.$data.user
     }
   },
   methods: {
     signIn () {
       if (this.user) return
       auth.signInWithEmailAndPassword(this.email, this.password)
+        .then( () => {
+          this.$root.$data.user = auth.currentUser
+          this.$router.replace('/')
+        })
         .catch((err) => {
           this.err = err.message
         })

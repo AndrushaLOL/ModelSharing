@@ -50,6 +50,7 @@ export default {
     return {
       email: '',
       password: '',
+      displayName:'',
       err: '',
       show: false
     }
@@ -70,6 +71,11 @@ export default {
         .catch((err) => {
           this.err = err.message
         })
+    },
+    updateProfile () {
+      auth.currentUser.updateProfile({
+        displayName: this.displayName
+      })
     }
   }
 }

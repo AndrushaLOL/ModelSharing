@@ -56,7 +56,7 @@ export default {
       show: false,
       err: '',
       rules: {
-        required: value => !!value || 'Required.',
+        required: value => !!value || 'Required',
         counterMax: value => value.length <= 20 || 'Max 20 characters',
         counterMin: value => value.length >= 8 || 'Min 8 characters',
         email: value => {
@@ -68,27 +68,22 @@ export default {
   },
   computed: {
     user () {
-      return this.$root.data.user
+      return this.$root.$data.user
     }
   },
   methods: {
     signUp () {
       if (this.user) {    
-      return this.err = 'you already logined'
-      }
-      auth.createUserWithEmailAndPassword(this.email, this.password)
-        .then(() => {
-          this.updateProfile()
-          this.$store.commit('SET_USER', auth.currentUser)
-          usersRef.push({
-            displayName: this.displayName,
-            email: this.user.email
-          })
-        })
-        .catch((err) => {
+      return this.err = 'You are already logined'
+      } 
+      auth.createUserWithEmailAndPassword(this.email, this.password).catch((err) => {
           this.err = err.message
         })
+      this.$root.$data.user = auth.currentUser
+      this.$router.replace('/')
+     
     },
+
     updateProfile () {
       auth.currentUser.updateProfile({
         displayName: this.displayName

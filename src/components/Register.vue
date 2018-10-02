@@ -15,19 +15,19 @@
                     v-model="email"  @input="err=''" type="text"></v-text-field>
                     <v-text-field id="password" prepend-icon="lock" name="password" label="Password"
                     counter
-                   :rules="[rules.counterMin, rules.counterMax, rules.required]"
-                   v-model="password" 
-                  @keyup.enter="signIn" 
-                  @input="err = ''"
-                  :append-icon="show ? 'visibility_off' : 'visibility'"
-                  :type="show ? 'text' : 'password'"
-                  @click:append="show = !show"
-                  ></v-text-field>
-                  <v-alert
-                  :value="err"
-                  type="error"
-                  >
-                  {{err}}
+                    :rules="[rules.counterMin, rules.counterMax, rules.required]"
+                    v-model="password" 
+                    @keyup.enter="signIn" 
+                    @input="err = ''"
+                    :append-icon="show ? 'visibility_off' : 'visibility'"
+                    :type="show ? 'text' : 'password'"
+                    @click:append="show = !show"
+                    ></v-text-field>
+                    <v-alert
+                    :value="err"
+                    type="error"
+                    >
+                    {{err}}
                   </v-alert>
                 </v-form>
               </v-card-text>
@@ -68,23 +68,21 @@ export default {
   },
   computed: {
     user () {
-      return this.$root.data.user
+      return this.$root.$data.user
     }
   },
   methods: {
     signUp () {
       if (this.user) {
         this.err = 'you already logined'
+        this.$router.replace('/')
         return
       }
       auth.createUserWithEmailAndPassword(this.email, this.password)
         .then(() => {
           this.updateProfile()
-          this.$store.commit('SET_USER', auth.currentUser)
-          usersRef.push({
-            displayName: this.displayName,
-            email: this.user.email
-          })
+          this.$root.$data.user = auth.currentUser
+          this.$router.replace('/')
         })
         .catch((err) => {
           this.err = err.message
@@ -94,6 +92,12 @@ export default {
       auth.currentUser.updateProfile({
         displayName: this.displayName
       })
+    }
+  },
+
+  mounted () {
+    if (this.user) {
+      this.$router.replace('/')
     }
   }
 }

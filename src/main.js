@@ -17,6 +17,8 @@ new Vue({
   router,
   render: h => h(App),
   created () {
-    this.user = auth.currentUser || null
+    auth.onAuthStateChanged( (user) => {
+      this.user = user || null
+    })
   }
 }).$mount('#app')

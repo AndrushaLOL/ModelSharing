@@ -50,6 +50,7 @@ export default {
     return {
       email: '',
       password: '',
+      displayName:'',
       err: '',
       show: false
     }
@@ -61,7 +62,10 @@ export default {
   },
   methods: {
     signIn () {
-      if (this.user) return
+      if (this.user) {
+        this.$router.replace('/') 
+        return
+      }
       auth.signInWithEmailAndPassword(this.email, this.password)
         .then( () => {
           this.$root.$data.user = auth.currentUser
@@ -70,6 +74,11 @@ export default {
         .catch((err) => {
           this.err = err.message
         })
+    },
+    updateProfile () {
+      auth.currentUser.updateProfile({
+        displayName: this.displayName
+      })
     }
   }
 }

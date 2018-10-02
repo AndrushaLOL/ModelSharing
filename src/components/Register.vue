@@ -13,7 +13,7 @@
                     <v-text-field  prepend-icon="person" name="login" label="Enter your login" v-model="displayName" :rules="[rules.required]" type="text"></v-text-field>
                     <v-text-field  prepend-icon="email" name="email" label="Enter your email" :rules="[rules.required, rules.email]"
                     v-model="email"  @input="err=''" type="text"></v-text-field>
-                    <v-text-field id="password" prepend-icon="lock" name="password" label="Password" type="password" 
+                    <v-text-field id="password" prepend-icon="lock" name="password" label="Password"
                     counter
                    :rules="[rules.counterMin, rules.counterMax, rules.required]"
                    v-model="password" 

@@ -35,6 +35,7 @@ export default {
   methods: {
     signOut () {
       auth.signOut()
+      this.authUser = null
       this.$root.$data.user = auth.currentUser
     },
     updateProfile () {

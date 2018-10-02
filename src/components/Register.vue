@@ -73,9 +73,8 @@ export default {
   },
   methods: {
     signUp () {
-      if (this.user) {
-        this.err = 'you already logined'
-        return
+      if (this.user) {    
+      return this.err = 'you already logined'
       }
       auth.createUserWithEmailAndPassword(this.email, this.password)
         .then(() => {

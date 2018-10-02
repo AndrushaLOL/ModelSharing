@@ -54,9 +54,10 @@ export default {
       password: '',
       displayName: '',
       show: false,
+      authUser: null,
       err: '',
       rules: {
-        required: value => !!value || 'Required.',
+        required: value => !!value || 'Required',
         counterMax: value => value.length <= 20 || 'Max 20 characters',
         counterMin: value => value.length >= 8 || 'Min 8 characters',
         email: value => {
@@ -87,10 +88,13 @@ export default {
         .catch((err) => {
           this.err = err.message
         })
+      this.$root.$data.user = auth.currentUser
+      this.$router.replace('/')
+     
     },
-    updateProfile () {
-      auth.currentUser.updateProfile({
-        displayName: this.displayName
+    created() {
+      firebase.auth().onAuthStateChanged(function(user) {
+        this.authUser = user
       })
     }
   },

@@ -1,10 +1,14 @@
 <template>
-    <div>
-     <input type="file" @change="filesChange($event.target.files)">
-     <span>{{file.name}}</span>
-     <span>{{this.$root.$data.user.toString()[0, 10]+'...'}}</span>
-     <button @click="addModel">upload</button> 
-    </div>    
+<v-layout row wrap>
+    <v-flex xs3 offset-xs3>
+        <div>
+            <input type="file" @change="filesChange($event.target.files)">
+            <span v-if="!!file">{{file.name[0, 7]+"..."}}</span>
+            <v-btn @click="addModel">upload</v-btn>
+            <v-progress-linear v-model="percents" color="indigo lighten-1" ></v-progress-linear>
+        </div>    
+    </v-flex>
+</v-layout>
 </template>
 
 <script>
@@ -14,8 +18,10 @@ export default {
     name: 'AddNewModel',
     data () {
         return {
-            file: {},
-            url: ''
+            file: null,
+            url: '',
+            loading: false,
+            percents: 0
         }
     },
 
@@ -25,13 +31,21 @@ export default {
         },
 
         addModel() {
-
+            if (!this.file) return
             const uploadTask = modelsRef.child(this.file.name).put(this.file)
             //   .then((snapshot) => {
             //       this.url = snapshot.ref.getDownloadURL()
             //   })
             uploadTask.on('state_changed', (snapshot) => {
-                console.log(snapshot.totalBytesTransferred)
+                let total = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+                if (snapshot.state == 'running') {
+                    this.loading = true
+                }
+                if (total == 100) {
+                    this.loading = false
+                }
+                this.percents = total
+                console.log((snapshot.bytesTransferred / snapshot.totalBytes) * 100, snapshot.state, snapshot)
             })
         }
     }

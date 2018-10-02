@@ -3,8 +3,11 @@
     <ul v-if="!user">
       <li><v-btn color="grey lightet-4" to="/login" dark>login</v-btn></li>  
       <li><v-btn color="grey lightet-4" to="/register" dark>register</v-btn></li>  
-    </ul>  
-    <v-btn v-else color="grey lightet-4" @click="signOut" dark>logout</v-btn>
+    </ul> 
+    <div v-else>
+    <v-btn  color="grey lightet-4" @click="signOut" dark>logout</v-btn>
+    <v-btn  color="grey lightet-4" to="/add" dark>add model</v-btn>
+    </div>
   </div> 
 </template>
 

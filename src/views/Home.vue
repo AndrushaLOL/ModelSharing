@@ -1,5 +1,6 @@
 <template>
-  <div v-if="user">
+  <div v-if="authUser">
+  		<p>{{ authUser.displayName }}</p>
      	<v-btn color="grey lightet-4" @click="signOut" dark>logout</v-btn>
   </div>
   <div v-else>
@@ -18,7 +19,8 @@ export default {
   name: 'home',
   data() {
   	return {
-  		displayName:''
+  		displayName:''б
+  		authUser: null
   	}
   },
   components: {

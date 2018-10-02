@@ -54,6 +54,7 @@ export default {
       password: '',
       displayName: '',
       show: false,
+      authUser: null,
       err: '',
       rules: {
         required: value => !!value || 'Required',
@@ -83,7 +84,11 @@ export default {
       this.$router.replace('/')
      
     },
-
+    created() {
+      firebase.auth().onAuthStateChanged(function(user) {
+        this.authUser = user
+      })
+    }
     updateProfile () {
       auth.currentUser.updateProfile({
         displayName: this.displayName

@@ -29,6 +29,7 @@
                 </v-card-text>
                 <v-card-actions>
                 <v-spacer></v-spacer>
+                <v-btn color="primary" @click="signInWithGoogle" class="mr-3">Google</v-btn>
                 <v-btn color="primary" @click="signIn" class="mr-3">Login</v-btn>
                 <small class="mr-5">Do not have an account? <router-link to="/register">Register</router-link></small>
               </v-card-actions>
@@ -44,6 +45,10 @@
 
 <script>
 import {auth} from '../firebase'
+import firebase from 'firebase'
+import {provider} from '../firebase'
+
+
 export default {
   name: 'Login',
   data () {
@@ -51,6 +56,7 @@ export default {
       email: '',
       password: '',
       displayName:'',
+      photoUrl: '',
       err: '',
       show: false
     }
@@ -64,7 +70,6 @@ export default {
     signIn () {
       if (this.user) {
         this.$router.replace('/') 
-        return
       }
       auth.signInWithEmailAndPassword(this.email, this.password)
         .then( () => {
@@ -75,11 +80,10 @@ export default {
           this.err = err.message
         })
     },
-    updateProfile () {
-      auth.currentUser.updateProfile({
-        displayName: this.displayName
-      })
+    signInWithGoogle(){ 
+      firebase.auth().signInWithPopup(provider)
     }
+
   }
 }
 </script>

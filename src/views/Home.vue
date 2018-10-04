@@ -1,6 +1,8 @@
 <template>
   <div v-if="!!user">
+ 		<img src=":bind='user.phoroUrl'"></img><br>
   		<p>{{ user.displayName }}</p>
+  		<p>{{ user.email }}</p><br>
      	<v-btn color="grey lightet-4" @click="signOut" dark>logout</v-btn>
       <v-btn color="grey" to="/add">add</v-btn>     
   </div>
@@ -18,11 +20,6 @@ import {auth} from '../firebase'
 
 export default {
   name: 'home',
-  data() {
-  	return {
-  		displayName:''
-  	}
-  },
   components: {
     HelloWorld
   },
@@ -35,15 +32,8 @@ export default {
   methods: {
     signOut () {
       auth.signOut()
-      this.authUser = null
       this.$root.$data.user = auth.currentUser
-    },
-    updateProfile () {
-      auth.currentUser.updateProfile({
-        displayName: this.displayName
-      })
     }
-
   }
 }
 </script>

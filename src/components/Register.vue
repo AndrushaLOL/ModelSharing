@@ -10,6 +10,7 @@
                 </v-toolbar>
                 <v-card-text>
                   <v-form>
+                    <v-text-field  prepend-icon="photo" name="photoUrl" label="Enter your photoUrl" v-model="photoUrl"  type="text"></v-text-field>
                     <v-text-field  prepend-icon="person" name="login" label="Enter your login" v-model="displayName" :rules="[rules.required]" type="text"></v-text-field>
                     <v-text-field  prepend-icon="email" name="email" label="Enter your email" :rules="[rules.required, rules.email]"
                     v-model="email"  @input="err=''" type="text"></v-text-field>
@@ -52,9 +53,9 @@ export default {
     return {
       email: '',
       password: '',
+      photoUrl: '',
       displayName: '',
       show: false,
-      authUser: null,
       err: '',
       rules: {
         required: value => !!value || 'Required',
@@ -87,17 +88,17 @@ export default {
         })
         .catch((err) => {
           this.err = err.message
+          displayName: this.displayName
         })
-      this.$root.$data.user = auth.currentUser
-      this.$router.replace('/')
-     
-    },
-    created() {
-      firebase.auth().onAuthStateChanged(function(user) {
-        this.authUser = user
+      },
+      updateProfile () {
+       auth.currentUser.updateProfile({
+         displayName: this.displayName,
+         email: this.email,
+         photoUrl: this.photoURL
       })
     }
-  },
+    },
 
   mounted () {
     if (this.user) {
@@ -105,4 +106,5 @@ export default {
     }
   }
 }
+
 </script>

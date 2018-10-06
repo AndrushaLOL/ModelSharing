@@ -10,7 +10,7 @@
                 </v-toolbar>
                 <v-card-text>
                   <v-form>
-                    <v-text-field  prepend-icon="photo" name="photoUrl" label="Enter your photoUrl" v-model="photoUrl"  type="text"></v-text-field>
+                    <v-text-field  prepend-icon="photo" name="photoURL" label="Enter your photoUrl" v-model="photoURL"  type="photoURL"></v-text-field>
                     <v-text-field  prepend-icon="person" name="login" label="Enter your login" v-model="displayName" :rules="[rules.required]" type="text"></v-text-field>
                     <v-text-field  prepend-icon="email" name="email" label="Enter your email" :rules="[rules.required, rules.email]"
                     v-model="email"  @input="err=''" type="text"></v-text-field>
@@ -53,9 +53,9 @@ export default {
     return {
       email: '',
       password: '',
-      photoUrl: '',
       displayName: '',
       show: false,
+      photoURL: null,
       err: '',
       rules: {
         required: value => !!value || 'Required',
@@ -63,7 +63,7 @@ export default {
         counterMin: value => value.length >= 8 || 'Min 8 characters',
         email: value => {
           const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-          return pattern.test(value) || 'Invalid e-mail.'
+          return pattern.test(value) || 'Invalid e-mail'
         }
       }
     }
@@ -95,7 +95,7 @@ export default {
        auth.currentUser.updateProfile({
          displayName: this.displayName,
          email: this.email,
-         photoUrl: this.photoURL
+         photoURL: this.photoURL
       })
     }
     },

@@ -17,20 +17,13 @@ Vue.config.productionTip = false
 
 new Vue({
   data: {
-    user: null,
-    displayName: null,
-    photoUrl: null,
+    user: null
   },
   router,
   render: h => h(App),
   created () {
     auth.onAuthStateChanged( (user) => {
       this.user = user || null
-      if (user) {
-      	this.displayName = user.displayName
-      	this.photoUrl = user.phtoURL
-  	  }
-
     })
   }, 
  

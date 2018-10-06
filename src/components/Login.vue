@@ -82,6 +82,8 @@ export default {
     },
     signInWithGoogle(){ 
       firebase.auth().signInWithPopup(provider)
+      this.$root.$data.user = auth.currentUser
+      this.$router.replace('/')
     }
 
   }

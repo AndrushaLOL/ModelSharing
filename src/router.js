@@ -4,6 +4,9 @@ import Home from './views/Home.vue'
 import AddNewModel from '@/components/AddNewModel'
 import Register from '@/components/Register'
 import Login from '@/components/Login'
+import Liked from '@/components/Liked'
+import Profile from '@/components/Profile'
+import Settings from '@/components/Settings'
 Vue.use(Router)
 
 export default new Router({
@@ -12,6 +15,21 @@ export default new Router({
       path: '/',
       name: 'home',
       component: Home
+    },
+    {
+      path: '/liked',
+      name: 'liked',
+      component: Liked
+    },
+    {
+      path: '/profile',
+      name: 'profile',
+      component: Liked
+    },
+    {
+      path: '/settings',
+      name: 'settings',
+      component: Settings
     },
     {
       path: '/login',

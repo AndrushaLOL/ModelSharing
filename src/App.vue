@@ -1,9 +1,22 @@
 <template>
   <div id="app">
-    <router-view/>
+    <v-app id='inspire'>
+      <root-header />
+      <router-view/>
+    </v-app>
   </div>
 </template>
 
+<script>
+import RootHeader from '@/components/RootHeader'
+
+export default {
+  name: 'App',
+  components: {
+    RootHeader
+  }
+}
+</script>
 
 
 <style>

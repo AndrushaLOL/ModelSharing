@@ -81,8 +81,8 @@
                         <v-card actions>
                             <v-text-field type="text" label="Name" :rules="nameRules" class="mb-5"></v-text-field>
                             <h2 class="font-weight-thin">Choose category</h2>
-                            <v-select class="mb-5" :rules="catRules" :items="categories" label="Category.."></v-selectЮ  
-                            <h2 class="font-weight-thin">Some tags</h2>
+                            <v-select class="mb-5" :rules="catRules" :items="categories" label="Category.."></v-select>
+                            <h2 class="font-weight-thin">Some tags</h2>                           
                             <v-combobox label="Tags" chips clearable solo multiple>
                                 <template slot="selection" slot-scope="data" class="mb-5"> 
                                     <v-chip :selected="data.selected" close @input="remove(data.item)">

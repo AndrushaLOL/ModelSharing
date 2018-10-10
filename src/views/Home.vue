@@ -1,65 +1,6 @@
 <template>
 <v-app id="inspire">
- 	<div  v-if='!!user'>
-    <v-navigation-drawer
-      v-model="drawer"
-      right
-      temporary
-      app
-    >
-    	<v-list dense>
-      		<v-avatar class="my-4"><img :src="user.photoURL"></img></v-avatar><br>
-  			<strong>{{ user.displayName }}</strong><br>
-  			<p>{{ user.email }}</p>
-  			<v-divider class="mb-4 v-divider theme dark"></v-divider>
-  			<v-list-tile to="/profile" class="my-3">
-          		<v-list-tile-action>
-            		<v-icon>home</v-icon>
-          		</v-list-tile-action>
-            	<v-list-tile-content class="my-3">
-            		<v-list-tile-title>Profile</v-list-tile-title>
-          		</v-list-tile-content>
-        	</v-list-tile>
-       	    <v-list-tile to="/add" class="my-3">
-                <v-list-tile-action>
-            		<v-icon>add</v-icon>
-          		</v-list-tile-action>
-          		<v-list-tile-content class="my-3">
-            		<v-list-tile-title>Add model</v-list-tile-title>
-          		</v-list-tile-content>
-        	</v-list-tile>
-        	<v-list-tile to="/liked" class="my-3">
-                <v-list-tile-action>
-            		<v-icon>thumb_up</v-icon>
-          		</v-list-tile-action>
-          		<v-list-tile-content class="my-3">
-            		<v-list-tile-title>Liked</v-list-tile-title>
-          		</v-list-tile-content>
-        	</v-list-tile>
-        	<v-list-tile to="/settings" class="my-3">
-                <v-list-tile-action>
-            		<v-icon>settings</v-icon>
-          		</v-list-tile-action>
-          		<v-list-tile-content class="my-3">
-            		<v-list-tile-title>Settings</v-list-tile-title>
-          		</v-list-tile-content>
-        	</v-list-tile>
-     		<v-btn color="primary"  @click="signOut" dark>logout</v-btn>
-    	</v-list> 	
-    </v-navigation-drawer>
-    <v-toolbar color="primary" dark fixed app>
-      	<v-toolbar-title>3DWorld</v-toolbar-title>
-    	<v-flex text-lg-center>
-    	    <v-btn flat color="white" to="/">Home</v-btn>
-    	    <v-btn flat color="white" to="/">Categories</v-btn>
-    	    <v-btn flat color="white" to="/">Groups</v-btn>
-    	    <v-btn flat color="white" to="/">About Us</v-btn>
-    	</v-flex>
-      	<v-spacer></v-spacer>
-      	<v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
-    </v-toolbar>
-    </div>
-    <div v-else>
+    <div v-if='!user'>
     	<v-toolbar color="primary" dark fixed app>
       		<v-toolbar-title>3DWorld</v-toolbar-title>
     	    <v-flex text-lg-center>
@@ -77,11 +18,11 @@
    	   		<v-card class="my-5">
     	 		<v-card-title primary-title>
     				<h1 class="display-1 font-weight-thin">Weekly top</h1>
-    			</v-card-title primary-title>
+    			</v-card-title>
     			<v-card-actions>	
     				<v-carousel id="carousel">
     					<v-carousel-item
-      					v-for="(item,i) in items"
+      					v-for="(item) in items"
       					:key="item.id"
       					:src="item.src"
     					></v-carousel-item>
@@ -95,17 +36,25 @@
    		 	<v-card class="my-5">
     			<v-card-title primary-title>
     				<h1 class="display-1 font-weight-thin">Weekly top</h1>
-    			</v-card-title primary-title>
+    			</v-card-title>
     			<v-card-actions>	
     				<v-carousel id="carousel">
     					<v-carousel-item
-      						v-for="(item,i) in items"
+      						v-for="(item) in sanya_items"
       						:key="item.id"
       						:src="item.src"
     					></v-carousel-item>
   					</v-carousel>
   				 </v-card-actions>
   			</v-card>
+				<v-card v-for='item in items' :key='item.src' class='mb-2	blue lighten-5'>
+					<v-card-title>{{item.name}}</v-card-title>
+					<v-card-text>
+						<span>category: {{item.category}}</span>
+						<br>
+						<span>tags: {{item.tags.join(' ')}}</span>
+					</v-card-text>
+				</v-card>
   		</v-flex>
   	</div>
 </v-app>
@@ -113,13 +62,13 @@
 
 <script>
 import HelloWorld from '@/components/HelloWorld.vue'
-import {auth} from '../firebase'
+import {auth, dbModelsRef} from '../firebase'
 
 export default {
   name: 'home',
   data(){
   	return {
-  		items: [
+  		sanya_items: [
           {
             src: 'https://scottwilloughby3dg.files.wordpress.com/2014/10/3d-model-face.jpg', id:'1'
           },
@@ -132,7 +81,8 @@ export default {
           {
             src: 'https://www.nyfa.edu/student-resources/wp-content/uploads/2015/01/4_arms_guy_by_slocik-d4siu3e.jpg', id:'4'
           }
-        ],
+				],
+			items: [],
   		drawer: null
   	}
   },
@@ -150,7 +100,22 @@ export default {
       auth.signOut()
       this.$root.$data.user = auth.currentUser
     }
-  }
+	},
+	created () {
+		dbModelsRef.on('value', (snapshot) => {
+			let items = []
+			snapshot.forEach(element => {
+        let { category, tags, url, name } = element.val()
+        items.push({
+          category: category || 'piski',
+          src: url || 'url_to_not_avaliable',
+          name: name || 'no name',
+          tags: name || ['no tags']
+        })
+			})
+			this.items = items
+		})
+	}
 }
 </script>
 

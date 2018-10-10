@@ -53,7 +53,7 @@
                     <v-card class="mb-5" color="grey lighten-1" height="600px">
                     </v-card>              
                     <v-btn color="primary" to="/profile">Done</v-btn>                   
-                    <v-btn flat @click="e1 = 1">Cancel</v-btn>
+                    <v-btn flat @click="e1 = 2">Cancel</v-btn>
                 </v-stepper-content>
             </v-stepper-items>
         </v-stepper>
@@ -117,7 +117,7 @@ export default {
                 if (total == 100) {
                     this.loading = false
                 }
-                if (typeof this.url !== 'string') {
+                if (typeof this.url !== 'object') {
                     if (typeof this.url.i !== 'string') {
                         this.url = snapshot.ref.getDownloadURL()
                     }
@@ -128,15 +128,16 @@ export default {
                 that.error = error
             },
             function ()  {
-                that.percents = 0 
+                that.error = ''
+                that.percents = 0
+                console.log('pushed!')
+                dbModelsRef.push({
+                    name: that.name,
+                    category: that.category,
+                    tags: that.tags,
+                    url: that.url['i']
+                })
             })
-
-            dbModelsRef.push({
-                url: this.url,
-                tags: this.tags,
-                name: this.name,
-                category: this.category
-            }) 
         }
     //     remove (item) {
     //         this.chips.splice(this.chips.indexOf(item), 1)

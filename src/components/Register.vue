@@ -88,7 +88,7 @@ export default {
         })
         .catch((err) => {
           this.err = err.message
-          displayName: this.displayName
+          this.displayName
         })
       },
       updateProfile () {

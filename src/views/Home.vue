@@ -110,7 +110,7 @@ export default {
           category: category || 'piski',
           src: url || 'url_to_not_avaliable',
           name: name || 'no name',
-          tags: name || ['no tags']
+          tags: tags || ['no tags']
         })
 			})
 			this.items = items

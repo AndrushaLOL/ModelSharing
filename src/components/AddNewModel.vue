@@ -15,10 +15,7 @@
                         <v-card class='elevation-0'>
                             <v-text-field type="text" label="Name" :rules="nameRules" class="mb-5" v-model='name'></v-text-field>
                             <h2 class="font-weight-thin">Choose category</h2>
-                            <v-select class="mb-5" :rules="catRules" :items="categories" label="Category.."></v-select>
-                            <h2 class="font-weight-thin">Some tags</h2>                           
-                            <v-combobox label="Tags" v-model="chips" chips clearable solo multiple>
-                            <v-select class="mb-5" :rules="catRules" :items="categories" label="Category..." v-model='category'></v-select>  
+                            <v-select class="mb-5" :rules="catRules" :items="categories" label="Category.."></v-select> 
                             <h2 class="font-weight-thin mb-2">Some tags</h2>
                             <v-combobox label="Tags" chips clearable solo multiple>
                                 <template slot="selection" slot-scope="data" class="mb-5"> 
@@ -32,9 +29,8 @@
                     <v-btn flat @click="e1 = 1">Cancel</v-btn>
                 </v-stepper-content>
                 <v-stepper-content step="2">
-
                         <h2 class="font-weight-thin mb-4">Upload a file</h2>
-                        <v-card>
+                        <v-card class="elevation-0">
                             <v-btn flat color="indigo lighten-2">
                             <input  id='file_upload' type="file" @change="filesChange($event.target.files)">
                             Select file
@@ -47,7 +43,6 @@
                             <h2 class="font-weight-thin mb-4">Summary</h2>
                             <v-textarea solo auto-grow name="input-7-1" label="Summary" value=""></v-textarea>
                         </v-card>
- 
                     <v-btn color="primary" @click="e1 = 3">Continue</v-btn>
                     <v-btn flat @click="e1 = 1">Cancel</v-btn>
                 </v-stepper-content>
@@ -84,7 +79,6 @@ export default {
             loading: false,
             percents: 0,
             drawer: null,
-            // chips: [],
             nameRules: [
                 value => !!value || 'Name is required'
             ],

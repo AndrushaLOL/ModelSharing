@@ -81,9 +81,14 @@ export default {
         })
     },
     signInWithGoogle(){ 
-      firebase.auth().signInWithPopup(provider)
+      firebase.auth().signInWithPopup(provider).then( (result) => {
+        console.log(result.accessToken)
+      })
+        .catch((error) => {
+          console.log(error.message)
+        })
       this.$root.$data.user = auth.currentUser
-      this.$router.replace('/')
+      // this.$router.replace('/')
     }
 
   }

@@ -1,4 +1,4 @@
-<template>
+  <template>
   <div  v-if='!!user'>
     <v-navigation-drawer
       v-model="drawer"
@@ -83,6 +83,7 @@ export default {
     signOut () {
       auth.signOut()
       this.$root.$data.user = auth.currentUser
+      this.$router.replace("/")
     }
   }
 }

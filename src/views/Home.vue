@@ -10,7 +10,7 @@
     	    	<v-btn flat color="white cyan--text" to="/">About Us</v-btn>
     	    </v-flex>
       		<v-spacer></v-spacer>
-    		<v-btn color="red darken-4" to="/login" dark>Login</v-btn>
+    		<v-btn color="light-blue darken-1 white--text" to="/login">Login</v-btn>
         </v-toolbar>	
     </div>
     <div v-if ="drawer">
@@ -52,8 +52,9 @@
 					<v-card-text>
 						<span>category: {{item.category}}</span>
 						<br>
-						<span>tags: {{item.tags.join(' ')}}</span>
+						<span>tags: {{item.tags.join(' ')}}</span><br>
 					</v-card-text>
+					<v-text>{{item.summary}}</v-text>
 				</v-card>
   		</v-flex>
   	</div>
@@ -105,15 +106,16 @@ export default {
 		dbModelsRef.on('value', (snapshot) => {
 			let items = []
 			snapshot.forEach(element => {
-        let { category, tags, url, name } = element.val()
-        items.push({
-          category: category || 'piski',
-          src: url || 'url_to_not_avaliable',
-          name: name || 'no name',
-          tags: tags || ['no tags']
-        })
-			})
-			this.items = items
+        	let { category, tags, url, name, summary } = element.val()
+        	items.push({
+          	category: category || 'piski',
+          	src: url || 'url_to_not_avaliable',
+          	name: name || 'no name',
+          	summary: summary || 'no summary',
+         	tags: tags || ['no tags']
+        	})
+		})
+		this.items = items
 		})
 	}
 }

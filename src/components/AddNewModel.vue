@@ -15,25 +15,40 @@
                         <v-card class='elevation-0'>
                             <v-text-field type="text" label="Name" :rules="nameRules" class="mb-5" v-model='name'></v-text-field>
                             <h2 class="font-weight-thin">Choose category</h2>
-                            <v-select class="mb-5" :rules="catRules" :items="categories" label="Category.."></v-select> 
+                            <v-select class="mb-5" :rules="catRules" :items="categories" label="Category.." v-model="category"></v-select> 
                             <h2 class="font-weight-thin mb-2">Some tags</h2>
-                            <v-combobox label="Tags" chips clearable solo multiple>
+                            <v-combobox v-model="tags" 
+                            :items="items"  
+                            chips clearable
+                            label='Tags..' 
+                            solo multiple>
                                 <template slot="selection" slot-scope="data" class="mb-5"> 
-                                    <v-chip :selected="data.selected" close @input="remove(data.item)" v-model='chips'>
+                                    <v-chip :selected="data.selected" close @input="remove(data.item)">
                                         <strong>{{ data.item }}</strong>&nbsp;
                                     </v-chip>
                                 </template>
                             </v-combobox> 
                         </v-card>
-                    <v-btn color="primary" @click="e1 = 2">Continue</v-btn>         
+                    <v-btn v-if='name && category' color="primary" @click="e1 = 2">Continue</v-btn>
+                    <v-btn v-else disabled>Continue</v-btn>        
                     <v-btn flat @click="e1 = 1">Cancel</v-btn>
                 </v-stepper-content>
                 <v-stepper-content step="2">
-                        <h2 class="font-weight-thin mb-4">Upload a file</h2>
                         <v-card class="elevation-0">
+                            <h2 class="font-weight-thin mb-4">Select a photo</h2>
                             <v-btn flat color="indigo lighten-2">
                             <input  id='file_upload' type="file" @change="filesChange($event.target.files)">
-                            Select file
+                            Select
+                            </v-btn>
+                            <span v-if="!!file">{{fileName}}</span>
+                            <br>
+                            <v-btn @click="addModel" v-if='!!file'>upload</v-btn>
+                            <v-progress-linear v-if='loading' v-model="percents" color="indigo lighten-1" ></v-progress-linear>
+                            <br>
+                            <h2 class="font-weight-thin mb-4">Upload a file</h2>
+                            <v-btn flat color="indigo lighten-2">
+                            <input  id='file_upload' type="file" @change="filesChange($event.target.files)">
+                            Upload
                             </v-btn>
                             <span v-if="!!file">{{fileName}}</span>
                             <br>
@@ -41,7 +56,7 @@
                             <v-progress-linear v-if='loading' v-model="percents" color="indigo lighten-1" ></v-progress-linear>
                             <v-alert type="error" :value="error"></v-alert>
                             <h2 class="font-weight-thin mb-4">Summary</h2>
-                            <v-textarea solo auto-grow name="input-7-1" label="Summary" value=""></v-textarea>
+                            <v-textarea solo auto-grow name="input-7-1" label="Summary" value="" v-model='summary'></v-textarea>
                         </v-card>
                     <v-btn color="primary" @click="e1 = 3">Continue</v-btn>
                     <v-btn flat @click="e1 = 1">Cancel</v-btn>
@@ -67,13 +82,14 @@ export default {
     name: 'AddNewModel',
     data () {
         return {
-            chips: [],
             categories: [ 'Household', 'Gadgets', 'Art', 'Hobby', 'Toys'],
             file: null,
+            items: [],
             url: '',
             e1: null,
             name: '',
-            tags: ['sobaka', 'kot'],
+            tags: [],
+            summary: '',
             category: [],
             error: '',
             loading: false,
@@ -132,13 +148,14 @@ export default {
                     name: that.name,
                     category: that.category,
                     tags: that.tags,
+                    summary: that.summary,
                     url: that.url['i']
                 })
             })
         },
         remove (item) {
-            this.chips.splice(this.chips.indexOf(item), 1)
-            this.chips = [...this.chips]
+            this.tags.splice(this.tags.indexOf(item), 1)
+            this.tags = [...this.tags]
         }
     }
 }

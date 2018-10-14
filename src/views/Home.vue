@@ -7,7 +7,7 @@
     	    	<v-btn flat color="white cyan--text" to="/">Home</v-btn>
     	    	<v-btn flat color="white cyan--text" to="/">Categories</v-btn>
     	    	<v-btn flat color="white cyan--text" to="/">Groups</v-btn>
-    	    	<v-btn flat color="white cyan--text" to="/">About Us</v-btn>
+    	    	<v-btn flat color="white cyan--text" to="/">About Us</v-btn>	
     	    </v-flex>
       		<v-spacer></v-spacer>
     		<v-btn color="light-blue darken-1 white--text" to="/login">Login</v-btn>
@@ -54,7 +54,7 @@
 						<br>
 						<span>tags: {{item.tags.join(' ')}}</span><br>
 					</v-card-text>
-					<v-text>{{item.summary}}</v-text>
+					<p>{{item.summary}}</p>
 				</v-card>
   		</v-flex>
   	</div>

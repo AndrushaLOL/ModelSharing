@@ -3,7 +3,7 @@
     <v-flex xs12 sm6 offset-sm3 class="mt-5">
         <v-stepper v-model="e1">
             <v-stepper-header>
-                <v-stepper-step :complete="e1 > 1" step="1">Choose a name and a category</v-stepper-step>
+                <v-stepper-step :complete="e1 > 1" step="1">Information</v-stepper-step>
                 <v-divider></v-divider>
                 <v-stepper-step :complete="e1 > 2" step="2">Upload a file</v-stepper-step>
                 <v-divider></v-divider>
@@ -15,7 +15,7 @@
                         <v-card class='elevation-0'>
                             <v-text-field type="text" label="Name" :rules="nameRules" class="mb-5" v-model='name'></v-text-field>
                             <h2 class="font-weight-thin">Choose category</h2>
-                            <v-select class="mb-5" :rules="catRules" :items="categories" label="Category.." v-model="category"></v-select> 
+                            <v-select class="mb-5" :rules="catRules" :items="categories" label="Category.." v-model='category'></v-select> 
                             <h2 class="font-weight-thin mb-2">Some tags</h2>
                             <v-combobox v-model="tags" 
                             :items="items"  
@@ -29,7 +29,7 @@
                                 </template>
                             </v-combobox> 
                         </v-card>
-                    <v-btn v-if='name && category' color="primary" @click="e1 = 2">Continue</v-btn>
+                    <v-btn v-if='name&&category' color="primary" @click="e1 = 2">Continue</v-btn>
                     <v-btn v-else disabled>Continue</v-btn>        
                     <v-btn flat @click="e1 = 1">Cancel</v-btn>
                 </v-stepper-content>
@@ -43,7 +43,7 @@
                             <span v-if="!!file">{{fileName}}</span>
                             <br>
                             <v-btn @click="addModel" v-if='!!file'>upload</v-btn>
-                            <v-progress-linear v-if='loading' v-model="percents" color="indigo lighten-1" ></v-progress-linear>
+                            <v-progress-linear v-if='loading' v-model="percents" color="indigo lighten-1"></v-progress-linear>
                             <br>
                             <h2 class="font-weight-thin mb-4">Upload a file</h2>
                             <v-btn flat color="indigo lighten-2">
@@ -53,7 +53,7 @@
                             <span v-if="!!file">{{fileName}}</span>
                             <br>
                             <v-btn @click="addModel" v-if='!!file'>upload</v-btn>
-                            <v-progress-linear v-if='loading' v-model="percents" color="indigo lighten-1" ></v-progress-linear>
+                            <v-progress-linear v-if='loading' v-model="percents" color="indigo lighten-1"></v-progress-linear>
                             <v-alert type="error" :value="error"></v-alert>
                             <h2 class="font-weight-thin mb-4">Summary</h2>
                             <v-textarea solo auto-grow name="input-7-1" label="Summary" value="" v-model='summary'></v-textarea>
@@ -90,7 +90,7 @@ export default {
             name: '',
             tags: [],
             summary: '',
-            category: [],
+            category: '',
             error: '',
             loading: false,
             percents: 0,

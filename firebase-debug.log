@@ -1,0 +1,25 @@
+[debug] [2018-10-16T09:39:24.270Z] ----------------------------------------------------------------------
+[debug] [2018-10-16T09:39:24.270Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\panus\AppData\Roaming\npm\node_modules\firebase-tools\bin\firebase serve
+[debug] [2018-10-16T09:39:24.270Z] CLI Version:   5.1.1
+[debug] [2018-10-16T09:39:24.270Z] Platform:      win32
+[debug] [2018-10-16T09:39:24.270Z] Node Version:  v8.12.0
+[debug] [2018-10-16T09:39:24.270Z] Time:          Tue Oct 16 2018 14:39:24 GMT+0500 (RTZ 4 (зима))
+[debug] [2018-10-16T09:39:24.270Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2018-10-16T09:39:24.285Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2018-10-16T09:39:24.285Z] > authorizing via signed-in user
+[debug] [2018-10-16T09:39:24.285Z] [iam] checking project model-sharing for permissions ["firebase.projects.get"]
+[debug] [2018-10-16T09:39:24.293Z] >>> HTTP REQUEST POST https://cloudresourcemanager.googleapis.com/v1/projects/model-sharing:testIamPermissions  
+
+[debug] [2018-10-16T09:39:25.440Z] <<< HTTP RESPONSE 200
+[debug] [2018-10-16T09:39:25.440Z] >>> HTTP REQUEST GET https://cloudresourcemanager.googleapis.com/v1/projects/model-sharing  
+ 
+[debug] [2018-10-16T09:39:26.516Z] <<< HTTP RESPONSE 200
+[info] 
+[info] === Serving from 'C:\Games\ModelSharing'...
+[info] 
+[debug] [2018-10-16T09:39:26.531Z] >>> HTTP REQUEST GET https://mobilesdk-pa.googleapis.com/v1/projects/338621657520/clients/_:getWebAppConfig  
+ 
+[debug] [2018-10-16T09:39:27.042Z] <<< HTTP RESPONSE 200
+[info] i  hosting: Serving hosting files from: public
+[info] +  hosting: Local server: http://localhost:5000

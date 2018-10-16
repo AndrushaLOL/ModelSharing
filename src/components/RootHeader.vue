@@ -48,15 +48,21 @@
     </v-navigation-drawer>
 
 
-    <v-toolbar color="primary" dark fixed app>
+    <v-toolbar color="primary" dark fixed app >
       <v-toolbar-title>3DWorld</v-toolbar-title>
-            <v-flex text-lg-center>
-                <v-btn flat color="white cyan--text" to="/">Home</v-btn>
-                <v-btn flat color="white cyan--text" to="/">Categories</v-btn>
-                <v-btn flat color="white cyan--text" to="/">Groups</v-btn>
-                <v-btn flat color="white cyan--text" to="/">About Us</v-btn>
-            </v-flex>
-      <v-spacer></v-spacer>
+      <v-flex text-center>
+        <v-btn flat color="white cyan--text" to="/">Home</v-btn>
+        <v-btn flat color="white cyan--text" to="/">Categories</v-btn>
+        <v-btn flat color="white cyan--text" to="/">Groups</v-btn>
+        <v-btn flat color="white cyan--text" to="/">About Us</v-btn>
+      </v-flex>
+       <v-text-field
+        flat
+        solo-inverted
+        append-icon="search"
+        label="Search"
+        class="mt-2"
+      ></v-text-field>      <v-spacer></v-spacer>
       <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
     </v-toolbar>
  </div>

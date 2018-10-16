@@ -24,7 +24,7 @@ export default new Router({
     {
       path: '/profile',
       name: 'profile',
-      component: Liked
+      component: Profile
     },
     {
       path: '/settings',

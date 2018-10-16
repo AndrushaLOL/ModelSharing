@@ -57,6 +57,10 @@ export default {
       password: '',
       displayName:'',
       photoUrl: '',
+      name: '',
+      surname: '',
+      country: '',
+      phone: '',
       err: '',
       show: false
     }
@@ -81,14 +85,9 @@ export default {
         })
     },
     signInWithGoogle(){ 
-      firebase.auth().signInWithPopup(provider).then( (result) => {
-        console.log(result.accessToken)
-      })
-        .catch((error) => {
-          console.log(error.message)
-        })
+      firebase.auth().signInWithPopup(provider)
       this.$root.$data.user = auth.currentUser
-      // this.$router.replace('/')
+      this.$router.replace('/')
     }
 
   }

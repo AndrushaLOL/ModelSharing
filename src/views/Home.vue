@@ -7,7 +7,7 @@
     	    	<v-btn flat color="white cyan--text" to="/">Home</v-btn>
     	    	<v-btn flat color="white cyan--text" to="/">Categories</v-btn>
     	    	<v-btn flat color="white cyan--text" to="/">Groups</v-btn>
-    	    	<v-btn flat color="white cyan--text" to="/">About Us</v-btn>
+    	    	<v-btn flat color="white cyan--text" to="/">About Us</v-btn>	
     	    </v-flex>
       		<v-spacer></v-spacer>
     		<v-btn color="light-blue darken-1 white--text" to="/login">Login</v-btn>
@@ -47,14 +47,14 @@
   					</v-carousel>
   				 </v-card-actions>
   			</v-card>
-				<v-card v-for='item in items' :key='item.src' class='mb-2 blue lighten-5'>
+				<v-card v-for='(item,i) in items' :key='i' class='mb-2 blue lighten-5'>
 					<v-card-title>{{item.name}}</v-card-title>
 					<v-card-text>
 						<span>category: {{item.category}}</span>
 						<br>
 						<span>tags: {{item.tags.join(' ')}}</span><br>
 					</v-card-text>
-					<span>{{item.summary}}</span>
+					<p>{{item.summary}}</p>
 				</v-card>
   		</v-flex>
   	</div>

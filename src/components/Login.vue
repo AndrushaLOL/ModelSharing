@@ -57,6 +57,10 @@ export default {
       password: '',
       displayName:'',
       photoUrl: '',
+      name: '',
+      surname: '',
+      country: '',
+      phone: '',
       err: '',
       show: false
     }

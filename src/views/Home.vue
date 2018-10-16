@@ -54,7 +54,7 @@
 						<br>
 						<span>tags: {{item.tags.join(' ')}}</span><br>
 					</v-card-text>
-					<v-text>{{item.summary}}</v-text>
+					<span>{{item.summary}}</span>
 				</v-card>
   		</v-flex>
   	</div>
@@ -112,7 +112,7 @@ export default {
           	src: url || 'url_to_not_avaliable',
           	name: name || 'no name',
           	summary: summary || 'no summary',
-         	tags: tags || ['no tags']
+         		tags: tags || ['no tags']
         	})
 		})
 		this.items = items

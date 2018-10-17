@@ -47,7 +47,7 @@
   					</v-carousel>
   				 </v-card-actions>
   			</v-card>
-				<v-card v-for='item in items' :key='item.src' class='mb-2 blue lighten-5'>
+				<v-card v-for='(item,i) in items' :key='i' class='mb-2 blue lighten-5'>
 					<v-card-title>{{item.name}}</v-card-title>
 					<v-card-text>
 						<span>category: {{item.category}}</span>
@@ -112,7 +112,7 @@ export default {
           	src: url || 'url_to_not_avaliable',
           	name: name || 'no name',
           	summary: summary || 'no summary',
-         	tags: tags || ['no tags']
+         		tags: tags || ['no tags']
         	})
 		})
 		this.items = items

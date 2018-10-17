@@ -22,7 +22,7 @@
     			<v-card-actions>	
     				<v-carousel id="carousel">
     					<v-carousel-item
-      					v-for="(item) in items"
+      					v-for="(item) in sanya_items"
       					:key="item.id"
       					:src="item.src"
     					></v-carousel-item>
@@ -33,7 +33,7 @@
     </div>
     <div v-else>
    		 <v-flex xs12 sm6 offset-sm3>
-   		 	<v-card class="my-5">
+   		 	<v-card style='margin: 100px 0 50px 0'>
     			<v-card-title primary-title>
     				<h1 class="display-1 font-weight-thin">Weekly top</h1>
     			</v-card-title>

@@ -1,7 +1,7 @@
 <template>
     <div  v-if='!!user'>
     <v-flex xs12 sm6 offset-sm3 class="mt-5">
-        <v-stepper v-model="e1">
+        <v-stepper v-model="e1" style='margin: 100px 0 50px 0'>
             <v-stepper-header>
                 <v-stepper-step :complete="e1 > 1" step="1">Information</v-stepper-step>
                 <v-divider></v-divider>
@@ -64,7 +64,7 @@
                 <v-stepper-content step="3">
                     <v-card class="mb-5" color="grey lighten-1" height="600px">
                     </v-card>              
-                    <v-btn color="primary" to="/profile">Done</v-btn>                   
+                    <v-btn color="primary" to="/">Done</v-btn>                   
                     <v-btn flat @click="e1 = 2">Cancel</v-btn>
                 </v-stepper-content>
             </v-stepper-items>

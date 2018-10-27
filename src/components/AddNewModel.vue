@@ -1,7 +1,7 @@
-<template>
+    <template>
     <div  v-if='!!user'>
-    <v-flex xs12 sm6 offset-sm3 class="mt-5">
-        <v-stepper v-model="e1" style='margin: 100px 0 50px 0'>
+    <v-flex xs12 sm6 offset-sm3 >
+        <v-stepper v-model="e1" id='step'>
             <v-stepper-header>
                 <v-stepper-step :complete="e1 > 1" step="1">Information</v-stepper-step>
                 <v-divider></v-divider>
@@ -10,12 +10,13 @@
                 <v-stepper-step step="3">You're done!</v-stepper-step>
             </v-stepper-header>
             <v-stepper-items>
+                <!--Name, category and tags-->
                 <v-stepper-content step="1">
                         <h2 class="font-weight-thin">Pick a name</h2>
                         <v-card class='elevation-0'>
-                            <v-text-field type="text" label="Name" :rules="nameRules" class="mb-5" v-model='name'></v-text-field>
+                            <v-text-field type="text" label="Name" :rules="required" class="mb-5" v-model='name'></v-text-field>
                             <h2 class="font-weight-thin">Choose category</h2>
-                            <v-select class="mb-5" :rules="catRules" :items="categories" label="Category.." v-model='category'></v-select> 
+                            <v-select class="mb-5" :rules="required" :items="categories" label="Category.." v-model='category'></v-select> 
                             <h2 class="font-weight-thin mb-2">Some tags</h2>
                             <v-combobox v-model="tags" 
                             :items="items"  
@@ -31,52 +32,44 @@
                         </v-card>
                     <v-btn v-if='name&&category' color="primary" @click="e1 = 2">Continue</v-btn>
                     <v-btn v-else disabled>Continue</v-btn>        
-                    <v-btn flat @click="e1 = 1">Cancel</v-btn>
+                    <v-btn flat @click="cancel">Cancel</v-btn>
                 </v-stepper-content>
+                <!-- end -->
+                <!-- Upload files, description, price -->
                 <v-stepper-content step="2">
+                        <!-- Upload model file -->
                         <v-card class="elevation-0">
-                            <h2 class="font-weight-thin mb-4">Select a photo</h2>
-                            <v-btn flat color="indigo lighten-2">
-                            <input  id='file_upload' type="file" @change="filesChange($event.target.files)">
-                            Select
-                            </v-btn>
-                            <span v-if="!!file">{{fileName}}</span>
-                            <br>
-                            <v-btn @click="addModel" v-if='!!file'>upload</v-btn>
-                            <v-progress-linear v-if='loading' v-model="percents" color="indigo lighten-1"></v-progress-linear>
-                            <br>
                             <h2 class="font-weight-thin mb-4">Upload a file</h2>
                             <v-btn flat color="indigo lighten-2">
                             <input  id='file_upload' type="file" @change="filesChange($event.target.files)">
-                            Select
-                            </v-btn>
-                            <span v-if="!!file">{{fileName}}</span>
-                            <br>
-                            <v-btn @click="addModel" v-if='!!file'>upload</v-btn>
-                            <v-progress-linear v-if='loading' v-model="percents" color="indigo lighten-1"></v-progress-linear>
-                            <br>
-                            <h2 class="font-weight-thin mb-4">Upload a file</h2>
-                            <v-btn flat color="indigo lighten-2">
-                            <v-btn flat color="indigo lighten-2">
-                            <input  id='file_upload' type="file" @change="filesChange($event.target.files)" multiple accept=".png,.jpg">
                             Upload
                             </v-btn>
                             <span v-if="!!file">{{fileName}}</span>
-                            <br>
-                            <v-btn @click="addModel" v-if='!!file'>upload</v-btn>
-                            <v-progress-linear v-if='loading' v-model="percents" color="indigo lighten-1"></v-progress-linear>
-                            <v-alert type="error" :value="error"></v-alert>
-                            <h2 class="font-weight-thin mb-4">Summary</h2>
-                            <v-textarea solo auto-grow name="input-7-1" label="Summary" value="" v-model='summary'></v-textarea>
+                            <!-- description -->
+                            <h2 class="font-weight-thin mb-4">Description</h2>
+                            <v-textarea solo auto-grow name="description" label="Describe your item" v-model='description'></v-textarea>
                         </v-card>
-                    <v-btn color="primary" @click="e1 = 3">Continue</v-btn>
-                    <v-btn flat @click="e1 = 1">Cancel</v-btn>
+                        <!-- end -->
+                    <v-btn color="primary" @click="e1 = 3" v-if='!!file'>Continue</v-btn>
+                    <v-btn v-else disabled>Continue</v-btn>
+                    <v-btn flat @click="cancel">Cancel</v-btn>
                 </v-stepper-content>
                 <v-stepper-content step="3">
-                    <v-card class="mb-5" color="grey lighten-1" height="600px">
+                    <!-- Upload file image -->
+                    <v-card class="elevation-0">
+                        <h2 class="font-weight-thin mb-4">Select item pic</h2>
+                        <v-btn flat color="indigo lighten-2">
+                        <input  type="file" id='image_upload' accept="image/*" @change="filesChange($event.target.files)">
+                        Select
+                        </v-btn>
+                        <!-- Price -->
+                        <h2 class="font-weight-thin mb-4">Set the price</h2>
+                        <v-text-field type="number" label="Price" :rules='required' class="mb-5" v-model='price'></v-text-field>
                     </v-card>              
-                    <v-btn color="primary" to="/">Done</v-btn>                   
-                    <v-btn flat @click="e1 = 2">Cancel</v-btn>
+                    <v-btn @click="addModel"  color="primary">Done</v-btn>
+                    <v-progress-linear v-if='loading' v-model="percents" color="indigo lighten-1"></v-progress-linear>
+                    <v-alert type="error" :value="error"></v-alert>                   
+                    <v-btn flat @click="cancel">Cancel</v-btn>
                 </v-stepper-content>
             </v-stepper-items>
         </v-stepper>
@@ -86,7 +79,7 @@
 
 
 <script>
-import {storageModelsRef, dbModelsRef} from '@/firebase'
+import {storageModelsRef, storageImagesRef, dbModelsRef} from '@/firebase'
 import {auth} from '../firebase'
 
 export default {
@@ -96,21 +89,25 @@ export default {
             categories: [ 'Household', 'Gadgets', 'Art', 'Hobby', 'Toys'],
             file: null,
             items: [],
+            file2: null,
+            price: '',
+            fileTrue: false,
+            imgTrue: false,
             url: '',
+            urlImg: '',
             e1: null,
             name: '',
             tags: [],
-            summary: '',
+            description: '',
             category: '',
             error: '',
             loading: false,
             percents: 0,
             drawer: null,
-            nameRules: [
-                value => !!value || 'Name is required'
-            ],
-            catRules: [
-                value => !!value || 'Category is required'
+            imageLoad: false,
+            modelLoad: false,
+            required: [
+                v => !!v || 'Required'
             ]
         }
     },
@@ -121,19 +118,29 @@ export default {
         },
         fileName () {
             return this.file.name.split('').slice(0, 15).join('')+"..."
+        },
+        allLoaded () {
+            return this.imageLoad && this.modelLoad
         }
     },
     methods: {
+        cancel(){
+            this.name = ''
+            this.category = ''
+            this.description = ''
+            this.e1 = 1
+            this.file = null
+            this.image = null
+            this.tags = []
+        },
         filesChange(files) {
             this.file = files[0]
+            this.file2 = files[1]
         },
-
-        addModel() {
-            let that = this
+        addModel(file, ref, currentFile) {
             if (!this.file) return
-            const uploadTask = storageModelsRef.child(this.file.name).put(this.file)
-            this.url = uploadTask.snapshot.ref.getDownloadURL()
-            uploadTask.on('state_changed', (snapshot) => {
+            const uploadTask = ref.child(file.name).put(file)
+            uploadImage.on('state_changed', (snapshot) => {
                 let total = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
                 if (snapshot.state == 'running') {
                     this.loading = true
@@ -141,39 +148,61 @@ export default {
                 if (total == 100) {
                     this.loading = false
                 }
-                if (typeof this.url !== 'object') {
-                    if (typeof this.url.i !== 'string') {
-                        this.url = snapshot.ref.getDownloadURL()
+                if (typeof this.urlImg !== 'object') {
+                    if (typeof this.urlImg.i !== 'string') {
+                        this.urlImg = snapshot.ref.getDownloadURL()
+                        this.imgTrue = true
                     }
                 }
                 this.percents = total
             },
-            function (error) {
-                that.error = error
+            (error) => {
+                this.error = error.message 
             },
-            function ()  {
-                that.error = ''
-                that.percents = 0
+            () => {
+                if (currentFile == 'image') {
+                    this.urlImg = uploadTask.snapshot.ref.getDownloadURL()
+                    this.imageLoad = true
+                } else {
+                    this.url = uploadTask.snapshot.ref.getDownloadURL()
+                    this.modelLoad = true
+                }
+             this.error = ''
+             this.percents = 0
                 console.log('pushed!')
-                dbModelsRef.push({
-                    name: that.name,
-                    category: that.category,
-                    tags: that.tags,
-                    summary: that.summary,
-                    url: that.url['i']
-                })
             })
+
         },
+
         remove (item) {
             this.tags.splice(this.tags.indexOf(item), 1)
             this.tags = [...this.tags]
+        }
+    },
+    watch: {
+        allLoaded(newVal, oldVal) {
+            if (newVal) {
+
+                dbModelsRef.push({
+                    description: this.description,
+                    price: this.price,
+                    name: this.name,
+                    category: this.category,
+                    tags: this.tags,
+                    urlImg: this.urlImg['i'],
+                    url: this.url['i']
+                })
+            }
         }
     }
 }
 </script>
 
-<style scoped>
-#file_upload {
+<style>
+    #step{
+        margin: 200px 0 50px 0;
+    }
+#model_upload, #image_upload {
     position: absolute;
     top: 0;
     right: 0;
@@ -186,4 +215,10 @@ export default {
     cursor: inherit;
     display: block;
   }
+
+  @media screen and (max-width: 1000px){
+    #step {
+      margin: 600px 0 50px 0;
+    }
+  }  
 </style>

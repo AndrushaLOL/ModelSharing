@@ -10,7 +10,6 @@
                 <v-stepper-step step="3">You're done!</v-stepper-step>
             </v-stepper-header>
             <v-stepper-items>
-                <!--Name, category and tags-->
                 <v-stepper-content step="1">
                         <h2 class="font-weight-thin">Pick a name</h2>
                         <v-card class='elevation-0'>
@@ -34,10 +33,7 @@
                     <v-btn v-else disabled>Continue</v-btn>        
                     <v-btn flat @click="e1 = 1">Cancel</v-btn>
                 </v-stepper-content>
-                <!-- end -->
-                <!-- Upload files, description, price -->
                 <v-stepper-content step="2">
-                        <!-- Upload model file -->
                         <v-card class="elevation-0">
                             <h2 class="font-weight-thin mb-4">Select a photo</h2>
                             <v-btn flat color="indigo lighten-2">
@@ -52,19 +48,32 @@
                             <h2 class="font-weight-thin mb-4">Upload a file</h2>
                             <v-btn flat color="indigo lighten-2">
                             <input  id='file_upload' type="file" @change="filesChange($event.target.files)">
+                            Select
+                            </v-btn>
+                            <span v-if="!!file">{{fileName}}</span>
+                            <br>
+                            <v-btn @click="addModel" v-if='!!file'>upload</v-btn>
+                            <v-progress-linear v-if='loading' v-model="percents" color="indigo lighten-1"></v-progress-linear>
+                            <br>
+                            <h2 class="font-weight-thin mb-4">Upload a file</h2>
+                            <v-btn flat color="indigo lighten-2">
+                            <v-btn flat color="indigo lighten-2">
+                            <input  id='file_upload' type="file" @change="filesChange($event.target.files)" multiple accept=".png,.jpg">
                             Upload
                             </v-btn>
                             <span v-if="!!file">{{fileName}}</span>
-                            <!-- description -->
-                            <h2 class="font-weight-thin mb-4">Description</h2>
-                            <v-textarea solo auto-grow name="description" label="Describe your item" v-model='description'></v-textarea>
+                            <br>
+                            <v-btn @click="addModel" v-if='!!file'>upload</v-btn>
+                            <v-progress-linear v-if='loading' v-model="percents" color="indigo lighten-1"></v-progress-linear>
+                            <v-alert type="error" :value="error"></v-alert>
+                            <h2 class="font-weight-thin mb-4">Summary</h2>
+                            <v-textarea solo auto-grow name="input-7-1" label="Summary" value="" v-model='summary'></v-textarea>
                         </v-card>
-                        <!-- end -->
-                    <v-btn color="primary" @click="e1 = 3" v-if='!!file'>Continue</v-btn>
-                    <v-btn v-else disabled>Continue</v-btn>
-                    <v-btn flat @click="cancel">Cancel</v-btn>
+                    <v-btn color="primary" @click="e1 = 3">Continue</v-btn>
+                    <v-btn flat @click="e1 = 1">Cancel</v-btn>
                 </v-stepper-content>
                 <v-stepper-content step="3">
+<<<<<<< HEAD
                     <!-- Upload file image -->
                     <v-card class="elevation-0">
                         <h2 class="font-weight-thin mb-4">Select item pic</h2>
@@ -86,6 +95,8 @@
                     <v-btn flat @click="e1 = 1">Cancel</v-btn>
                 </v-stepper-content>
                 <v-stepper-content step="3">
+=======
+>>>>>>> parent of f756458... Вроде сделал, но не тестил
                     <v-card class="mb-5" color="grey lighten-1" height="600px">
                     </v-card>              
                     <v-btn color="primary" to="/">Done</v-btn>                   
@@ -119,11 +130,14 @@ export default {
             loading: false,
             percents: 0,
             drawer: null,
+<<<<<<< HEAD
             imageLoad: false,
             modelLoad: false,
             required: [
                 v => !!v || 'Required'
             ],
+=======
+>>>>>>> parent of f756458... Вроде сделал, но не тестил
             nameRules: [
                 value => !!value || 'Name is required'
             ],
@@ -139,12 +153,10 @@ export default {
         },
         fileName () {
             return this.file.name.split('').slice(0, 15).join('')+"..."
-        },
-        allLoaded () {
-            return this.imageLoad && this.modelLoad
         }
     },
     methods: {
+<<<<<<< HEAD
 
         cancel(){
             this.name = ''
@@ -156,6 +168,8 @@ export default {
             this.tags = []
         },
 
+=======
+>>>>>>> parent of f756458... Вроде сделал, но не тестил
         filesChange(files) {
             this.file = files[0]
         },
@@ -173,12 +187,15 @@ export default {
                 if (total == 100) {
                     this.loading = false
                 }
+<<<<<<< HEAD
                 if (typeof this.urlImg !== 'object') {
                     if (typeof this.urlImg.i !== 'string') {
                         this.urlImg = snapshot.ref.getDownloadURL()
                         this.imgTrue = true
                 }
             }
+=======
+>>>>>>> parent of f756458... Вроде сделал, но не тестил
                 if (typeof this.url !== 'object') {
                     if (typeof this.url.i !== 'string') {
                         this.url = snapshot.ref.getDownloadURL()
@@ -186,9 +203,10 @@ export default {
                 }
                 this.percents = total
             },
-            (error) => {
-                this.error = error.message 
+            function (error) {
+                that.error = error
             },
+<<<<<<< HEAD
             () => {
                 if (currentFile == 'image') {
                     this.urlImg = uploadTask.snapshot.ref.getDownloadURL()
@@ -198,46 +216,39 @@ export default {
                     this.modelLoad = true
                 }
             function() {
+=======
+            function ()  {
+>>>>>>> parent of f756458... Вроде сделал, но не тестил
                 that.error = ''
                 that.percents = 0
                 console.log('pushed!')
                 dbModelsRef.push({
+<<<<<<< HEAD
                     description: that.description,
                     price: that.price,
+=======
+>>>>>>> parent of f756458... Вроде сделал, но не тестил
                     name: that.name,
                     category: that.category,
                     tags: that.tags,
                     summary: that.summary,
                     url: that.url['i']
                 })
+<<<<<<< HEAD
             }
+=======
+>>>>>>> parent of f756458... Вроде сделал, но не тестил
             })
         },
-
         remove (item) {
             this.tags.splice(this.tags.indexOf(item), 1)
             this.tags = [...this.tags]
-        }
-    },
-    watch: {
-        allLoaded(newVal, oldVal) {
-            if (newVal) {
-
-                dbModelsRef.push({
-                    description: this.description,
-                    price: this.price,
-                    name: this.name,
-                    category: this.category,
-                    tags: this.tags,
-                    urlImg: this.urlImg['i'],
-                    url: this.url['i']
-                })
-            }
         }
     }
 }
 </script>
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <style>
     #step{
@@ -248,6 +259,10 @@ export default {
 <style scoped>
 #file_upload {
 >>>>>>> parent of 2e5ab5b... фыа
+=======
+<style scoped>
+#file_upload {
+>>>>>>> parent of f756458... Вроде сделал, но не тестил
     position: absolute;
     top: 0;
     right: 0;

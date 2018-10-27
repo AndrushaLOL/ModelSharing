@@ -73,7 +73,6 @@
                     <v-btn flat @click="e1 = 1">Cancel</v-btn>
                 </v-stepper-content>
                 <v-stepper-content step="3">
-<<<<<<< HEAD
                     <!-- Upload file image -->
                     <v-card class="elevation-0">
                         <h2 class="font-weight-thin mb-4">Select item pic</h2>
@@ -95,8 +94,6 @@
                     <v-btn flat @click="e1 = 1">Cancel</v-btn>
                 </v-stepper-content>
                 <v-stepper-content step="3">
-=======
->>>>>>> parent of f756458... Вроде сделал, но не тестил
                     <v-card class="mb-5" color="grey lighten-1" height="600px">
                     </v-card>              
                     <v-btn color="primary" to="/">Done</v-btn>                   
@@ -130,14 +127,11 @@ export default {
             loading: false,
             percents: 0,
             drawer: null,
-<<<<<<< HEAD
             imageLoad: false,
             modelLoad: false,
             required: [
                 v => !!v || 'Required'
             ],
-=======
->>>>>>> parent of f756458... Вроде сделал, но не тестил
             nameRules: [
                 value => !!value || 'Name is required'
             ],
@@ -156,7 +150,6 @@ export default {
         }
     },
     methods: {
-<<<<<<< HEAD
 
         cancel(){
             this.name = ''
@@ -167,9 +160,6 @@ export default {
             this.image = null
             this.tags = []
         },
-
-=======
->>>>>>> parent of f756458... Вроде сделал, но не тестил
         filesChange(files) {
             this.file = files[0]
         },
@@ -187,15 +177,12 @@ export default {
                 if (total == 100) {
                     this.loading = false
                 }
-<<<<<<< HEAD
                 if (typeof this.urlImg !== 'object') {
                     if (typeof this.urlImg.i !== 'string') {
                         this.urlImg = snapshot.ref.getDownloadURL()
                         this.imgTrue = true
                 }
             }
-=======
->>>>>>> parent of f756458... Вроде сделал, но не тестил
                 if (typeof this.url !== 'object') {
                     if (typeof this.url.i !== 'string') {
                         this.url = snapshot.ref.getDownloadURL()
@@ -206,7 +193,7 @@ export default {
             function (error) {
                 that.error = error
             },
-<<<<<<< HEAD
+
             () => {
                 if (currentFile == 'image') {
                     this.urlImg = uploadTask.snapshot.ref.getDownloadURL()
@@ -215,29 +202,21 @@ export default {
                     this.url = uploadTask.snapshot.ref.getDownloadURL()
                     this.modelLoad = true
                 }
-            function() {
-=======
             function ()  {
->>>>>>> parent of f756458... Вроде сделал, но не тестил
                 that.error = ''
                 that.percents = 0
                 console.log('pushed!')
                 dbModelsRef.push({
-<<<<<<< HEAD
                     description: that.description,
                     price: that.price,
-=======
->>>>>>> parent of f756458... Вроде сделал, но не тестил
                     name: that.name,
                     category: that.category,
                     tags: that.tags,
                     summary: that.summary,
                     url: that.url['i']
                 })
-<<<<<<< HEAD
             }
-=======
->>>>>>> parent of f756458... Вроде сделал, но не тестил
+
             })
         },
         remove (item) {
@@ -248,21 +227,11 @@ export default {
 }
 </script>
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 <style>
     #step{
         margin: 200px 0 50px 0;
     }
 #model_upload, #image_upload {
-=======
-<style scoped>
-#file_upload {
->>>>>>> parent of 2e5ab5b... фыа
-=======
-<style scoped>
-#file_upload {
->>>>>>> parent of f756458... Вроде сделал, но не тестил
     position: absolute;
     top: 0;
     right: 0;

@@ -74,6 +74,7 @@
                 </v-stepper-content>
                 <v-stepper-content step="3">
 <<<<<<< HEAD
+<<<<<<< HEAD
                     <!-- Upload file image -->
                     <v-card class="elevation-0">
                         <h2 class="font-weight-thin mb-4">Select item pic</h2>
@@ -95,6 +96,8 @@
                     <v-btn flat @click="e1 = 1">Cancel</v-btn>
                 </v-stepper-content>
                 <v-stepper-content step="3">
+=======
+>>>>>>> parent of 2e5ab5b... фыа
 =======
 >>>>>>> parent of 2e5ab5b... фыа
                     <v-card class="mb-5" color="grey lighten-1" height="600px">
@@ -131,11 +134,14 @@ export default {
             percents: 0,
             drawer: null,
 <<<<<<< HEAD
+<<<<<<< HEAD
             imageLoad: false,
             modelLoad: false,
             required: [
                 v => !!v || 'Required'
             ],
+=======
+>>>>>>> parent of 2e5ab5b... фыа
 =======
 >>>>>>> parent of 2e5ab5b... фыа
             nameRules: [
@@ -157,6 +163,7 @@ export default {
     },
     methods: {
 <<<<<<< HEAD
+<<<<<<< HEAD
 
         cancel(){
             this.name = ''
@@ -167,6 +174,8 @@ export default {
             this.image = null
             this.tags = []
         },
+=======
+>>>>>>> parent of 2e5ab5b... фыа
 =======
 >>>>>>> parent of 2e5ab5b... фыа
         filesChange(files) {
@@ -186,11 +195,14 @@ export default {
                 if (total == 100) {
                     this.loading = false
 <<<<<<< HEAD
+<<<<<<< HEAD
                 }
                 if (typeof this.urlImg !== 'object') {
                     if (typeof this.urlImg.i !== 'string') {
                         this.urlImg = snapshot.ref.getDownloadURL()
                         this.imgTrue = true
+=======
+>>>>>>> parent of 2e5ab5b... фыа
 =======
 >>>>>>> parent of 2e5ab5b... фыа
                 }
@@ -226,8 +238,11 @@ export default {
                     url: that.url['i']
                 })
 <<<<<<< HEAD
+<<<<<<< HEAD
             }
 
+=======
+>>>>>>> parent of 2e5ab5b... фыа
 =======
 >>>>>>> parent of 2e5ab5b... фыа
             })
@@ -241,12 +256,15 @@ export default {
 </script>
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 <style>
     #step{
         margin: 200px 0 50px 0;
     }
 #model_upload, #image_upload {
 =======
+=======
+>>>>>>> parent of 2e5ab5b... фыа
 <style scoped>
 #file_upload {
 >>>>>>> parent of 2e5ab5b... фыа

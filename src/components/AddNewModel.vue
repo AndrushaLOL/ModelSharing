@@ -126,7 +126,6 @@ export default {
     methods: {
         filesChange(files) {
             this.file = files[0]
-            this.addModel()
         },
 
         addModel() {

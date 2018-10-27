@@ -35,8 +35,8 @@
                 </v-stepper-content>
                 <v-stepper-content step="2">
                         <v-card class="elevation-0">
-                            <h2 class="font-weight-thin mb-4">Select a photo</h2>
-                            <v-btn flat color="indigo lighten-2">
+                            <!-- <h2 class="font-weight-thin mb-4">Select a photo</h2> -->
+                            <!-- <v-btn flat color="indigo lighten-2">
                             <input  id='file_upload' type="file" @change="filesChange($event.target.files)">
                             Select
                             </v-btn>
@@ -45,15 +45,16 @@
                             <v-btn @click="addModel" v-if='!!file'>upload</v-btn>
                             <v-progress-linear v-if='loading' v-model="percents" color="indigo lighten-1"></v-progress-linear>
                             <br>
-                            <h2 class="font-weight-thin mb-4">Upload a file</h2>
+                            <h2 class="font-weight-thin mb-4">Upload a file</h2> -->
                             <v-btn flat color="indigo lighten-2">
-                            <input  id='file_upload' type="file" @change="filesChange($event.target.files)">
+                            <input  id='file_upload' type="file" @change="filesChange($event.target.files)" multiple accept=".png,.jpg">
                             Upload
                             </v-btn>
                             <span v-if="!!file">{{fileName}}</span>
                             <br>
-                            <v-btn @click="addModel" v-if='!!file'>upload</v-btn>
+                            <v-scale-transition>
                             <v-progress-linear v-if='loading' v-model="percents" color="indigo lighten-1"></v-progress-linear>
+                            </v-scale-transition>
                             <v-alert type="error" :value="error"></v-alert>
                             <h2 class="font-weight-thin mb-4">Summary</h2>
                             <v-textarea solo auto-grow name="input-7-1" label="Summary" value="" v-model='summary'></v-textarea>
@@ -115,6 +116,7 @@ export default {
     methods: {
         filesChange(files) {
             this.file = files[0]
+            this.addModel()
         },
 
         addModel() {

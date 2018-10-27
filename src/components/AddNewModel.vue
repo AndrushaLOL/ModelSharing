@@ -1,7 +1,6 @@
 <template>
     <div  v-if='!!user'>
     <v-flex xs12 sm6 offset-sm3 class="mt-5">
-        <v-stepper v-model="e1">
         <v-stepper v-model="e1" style='margin: 100px 0 50px 0'>
             <v-stepper-header>
                 <v-stepper-step :complete="e1 > 1" step="1">Information</v-stepper-step>
@@ -36,8 +35,17 @@
                 </v-stepper-content>
                 <v-stepper-content step="2">
                         <v-card class="elevation-0">
-                            <v-btn flat color="indigo lighten-2">
                             <h2 class="font-weight-thin mb-4">Select a photo</h2>
+                            <v-btn flat color="indigo lighten-2">
+                            <input  id='file_upload' type="file" @change="filesChange($event.target.files)">
+                            Select
+                            </v-btn>
+                            <span v-if="!!file">{{fileName}}</span>
+                            <br>
+                            <v-btn @click="addModel" v-if='!!file'>upload</v-btn>
+                            <v-progress-linear v-if='loading' v-model="percents" color="indigo lighten-1"></v-progress-linear>
+                            <br>
+                            <h2 class="font-weight-thin mb-4">Upload a file</h2>
                             <v-btn flat color="indigo lighten-2">
                             <input  id='file_upload' type="file" @change="filesChange($event.target.files)">
                             Select
@@ -57,7 +65,6 @@
                             <br>
                             <v-btn @click="addModel" v-if='!!file'>upload</v-btn>
                             <v-progress-linear v-if='loading' v-model="percents" color="indigo lighten-1"></v-progress-linear>
-
                             <v-alert type="error" :value="error"></v-alert>
                             <h2 class="font-weight-thin mb-4">Summary</h2>
                             <v-textarea solo auto-grow name="input-7-1" label="Summary" value="" v-model='summary'></v-textarea>
@@ -67,9 +74,8 @@
                 </v-stepper-content>
                 <v-stepper-content step="3">
                     <v-card class="mb-5" color="grey lighten-1" height="600px">
-                    </v-card>                          
+                    </v-card>              
                     <v-btn color="primary" to="/">Done</v-btn>                   
-
                     <v-btn flat @click="e1 = 2">Cancel</v-btn>
                 </v-stepper-content>
             </v-stepper-items>

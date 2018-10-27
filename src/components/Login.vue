@@ -29,13 +29,18 @@
                 </v-card-text>
                 <v-card-actions>
                 <v-spacer></v-spacer>
-                <a @click="signInWithGoogle" class='mr-3'>
-                  <v-avatar  :size='35' :tile='false'>
+                <a @click="signInWithGoogle" class=''>
+                  <v-avatar  :size='45' :tile='false'>
                     <img src="https://pbs.twimg.com/media/DdJVLUdX0AA77mU.png">
                   </v-avatar>
                 </a>
-                <a @click="signInWithFacebook" class='mr-5'>
-                  <v-avatar :size='35'  :tile='false'>
+                <a @click="signInWithGithub" class='mx-4'>
+                  <v-avatar :size='45'  :tile='false'>
+                    <img src="https://banner2.kisspng.com/20180530/qrz/kisspng-github-computer-icons-directory-5b0ec64b42e842.0836237615276949232741.jpg">
+                  </v-avatar>
+                </a>
+                <a @click="signInWithFacebook" class='mr-4'>
+                  <v-avatar :size='45'  :tile='false'>
                     <img src="https://image.flaticon.com/icons/svg/145/145802.svg">
                   </v-avatar>
                 </a>
@@ -56,6 +61,7 @@
 import {auth} from '../firebase'
 import firebase from 'firebase'
 import {provider} from '../firebase'
+import {provider2} from '../firebase'
 import {provider3} from '../firebase'
 
 
@@ -67,7 +73,7 @@ export default {
       password: '',
       displayName:'',
       photoUrl: '',
-      personalName: '',
+      name: '',
       surname: '',
       country: '',
       phone: '',
@@ -99,7 +105,11 @@ export default {
       this.$root.$data.user = auth.currentUser
       this.$router.replace('/')
     },
-
+    signInWithGithub(){ 
+      firebase.auth().signInWithPopup(provider2)
+      this.$root.$data.user = auth.currentUser
+      this.$router.replace('/')
+    },
     signInWithFacebook() {
       firebase.auth().signInWithPopup(provider3)
       this.$root.$data.user = auth.currentUser

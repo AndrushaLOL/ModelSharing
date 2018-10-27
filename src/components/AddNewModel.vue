@@ -122,18 +122,16 @@ export default {
             loading: false,
             percents: 0,
             drawer: null,
-<<<<<<< HEAD
             imageLoad: false,
             modelLoad: false,
             required: [
                 v => !!v || 'Required'
-=======
+            ],
             nameRules: [
                 value => !!value || 'Name is required'
             ],
             catRules: [
                 value => !!value || 'Category is required'
->>>>>>> parent of 2e5ab5b... фыа
             ]
         }
     },
@@ -150,7 +148,7 @@ export default {
         }
     },
     methods: {
-<<<<<<< HEAD
+
         cancel(){
             this.name = ''
             this.category = ''
@@ -160,17 +158,10 @@ export default {
             this.image = null
             this.tags = []
         },
-=======
->>>>>>> parent of 2e5ab5b... фыа
+
         filesChange(files) {
             this.file = files[0]
         },
-<<<<<<< HEAD
-        addModel(file, ref, currentFile) {
-            if (!this.file) return
-            const uploadTask = ref.child(file.name).put(file)
-            uploadImage.on('state_changed', (snapshot) => {
-=======
 
         addModel() {
             let that = this
@@ -178,7 +169,6 @@ export default {
             const uploadTask = storageModelsRef.child(this.file.name).put(this.file)
             this.url = uploadTask.snapshot.ref.getDownloadURL()
             uploadTask.on('state_changed', (snapshot) => {
->>>>>>> parent of 2e5ab5b... фыа
                 let total = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
                 if (snapshot.state == 'running') {
                     this.loading = true
@@ -186,16 +176,13 @@ export default {
                 if (total == 100) {
                     this.loading = false
                 }
-<<<<<<< HEAD
                 if (typeof this.urlImg !== 'object') {
                     if (typeof this.urlImg.i !== 'string') {
                         this.urlImg = snapshot.ref.getDownloadURL()
                         this.imgTrue = true
-=======
                 if (typeof this.url !== 'object') {
                     if (typeof this.url.i !== 'string') {
                         this.url = snapshot.ref.getDownloadURL()
->>>>>>> parent of 2e5ab5b... фыа
                     }
                 }
                 this.percents = total
@@ -203,7 +190,6 @@ export default {
             (error) => {
                 this.error = error.message 
             },
-<<<<<<< HEAD
             () => {
                 if (currentFile == 'image') {
                     this.urlImg = uploadTask.snapshot.ref.getDownloadURL()
@@ -215,7 +201,6 @@ export default {
              this.error = ''
              this.percents = 0
                 console.log('pushed!')
-=======
             function ()  {
                 that.error = ''
                 that.percents = 0
@@ -227,11 +212,9 @@ export default {
                     summary: that.summary,
                     url: that.url['i']
                 })
->>>>>>> parent of 2e5ab5b... фыа
-            })
-
-        },
-
+        
+        
+        },  
         remove (item) {
             this.tags.splice(this.tags.indexOf(item), 1)
             this.tags = [...this.tags]

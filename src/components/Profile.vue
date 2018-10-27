@@ -1,9 +1,9 @@
 <template>
 	<v-flex xs12 sm6 offset-sm3	class='my-5'>
-		<v-card style='margin: 100px 0 50px 0'>
+		<v-card id='profCard'>
 			<v-avatar class="my-4" :size="250" :tile="true"><img :src="user.photoURL"></v-avatar><br>
 			<h1 class='d-inline'>Name: </h1>
-			<h1 class='font-weight-thin d-inline'>*name*</h1><br>
+			<h1 class='font-weight-thin d-inline'>{{user.personalName}}</h1><br>
 			<h1 class='d-inline'>Surname: </h1>
 			<h1 class='font-weight-thin d-inline'>*surname*</h1><br>
 			<h1 class='d-inline'>Email: </h1>
@@ -42,3 +42,16 @@ export default {
 }
 </script>
 
+<style>
+  #profCard{
+   margin: 100px 0 50px 0;
+  }
+  
+
+  @media screen and (max-width: 1000px){
+    #profCard {
+      margin: 450px 0 50px;
+    }
+  }
+
+</style>

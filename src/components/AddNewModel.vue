@@ -1,7 +1,7 @@
-<template>
+    <template>
     <div  v-if='!!user'>
-    <v-flex xs12 sm6 offset-sm3 class="mt-5">
-        <v-stepper v-model="e1" style='margin: 100px 0 50px 0'>
+    <v-flex xs12 sm10 offset-sm1 md6 offset-md3 >
+        <v-stepper v-model="e1" id='step'>
             <v-stepper-header>
                 <v-stepper-step :complete="e1 > 1" step="1">Information</v-stepper-step>
                 <v-divider></v-divider>
@@ -13,9 +13,9 @@
                 <v-stepper-content step="1">
                         <h2 class="font-weight-thin">Pick a name</h2>
                         <v-card class='elevation-0'>
-                            <v-text-field type="text" label="Name" :rules="nameRules" class="mb-5" v-model='name'></v-text-field>
+                            <v-text-field type="text" label="Name" :rules="required" class="mb-5" v-model='name'></v-text-field>
                             <h2 class="font-weight-thin">Choose category</h2>
-                            <v-select class="mb-5" :rules="catRules" :items="categories" label="Category.." v-model='category'></v-select> 
+                            <v-select class="mb-5" :rules="required" :items="categories" label="Category.." v-model='category'></v-select> 
                             <h2 class="font-weight-thin mb-2">Some tags</h2>
                             <v-combobox v-model="tags" 
                             :items="items"  
@@ -31,82 +31,46 @@
                         </v-card>
                     <v-btn v-if='name&&category' color="primary" @click="e1 = 2">Continue</v-btn>
                     <v-btn v-else disabled>Continue</v-btn>        
-                    <v-btn flat @click="e1 = 1">Cancel</v-btn>
+                    <v-btn flat @click="cancel">Cancel</v-btn>
                 </v-stepper-content>
                 <v-stepper-content step="2">
                         <v-card class="elevation-0">
-                            <h2 class="font-weight-thin mb-4">Select a photo</h2>
-                            <v-btn flat color="indigo lighten-2">
-                            <input  id='file_upload' type="file" @change="filesChange($event.target.files)">
-                            Select
-                            </v-btn>
-                            <span v-if="!!file">{{fileName}}</span>
-                            <br>
-                            <v-btn @click="addModel" v-if='!!file'>upload</v-btn>
-                            <v-progress-linear v-if='loading' v-model="percents" color="indigo lighten-1"></v-progress-linear>
-                            <br>
                             <h2 class="font-weight-thin mb-4">Upload a file</h2>
-                            <v-btn flat color="indigo lighten-2">
-                            <input  id='file_upload' type="file" @change="filesChange($event.target.files)">
-                            Select
+                            <v-btn color="blue-grey"
+                            :loading="loading3"
+                            :disabled="loading3" 
+                            class="white--text" 
+                            @click.native="loader = 'loading3'"
+                            >
+                            <input  id='model_upload' type="file" @change="filesChange">Upload   
+                            <v-icon right dark>cloud_upload</v-icon>
                             </v-btn>
                             <span v-if="!!file">{{fileName}}</span>
-                            <br>
-                            <v-btn @click="addModel" v-if='!!file'>upload</v-btn>
-                            <v-progress-linear v-if='loading' v-model="percents" color="indigo lighten-1"></v-progress-linear>
-                            <br>
-                            <h2 class="font-weight-thin mb-4">Upload a file</h2>
-                            <v-btn flat color="indigo lighten-2">
-                            <v-btn flat color="indigo lighten-2">
-                            <input  id='file_upload' type="file" @change="filesChange($event.target.files)" multiple accept=".png,.jpg">
-                            Upload
-                            </v-btn>
-                            <span v-if="!!file">{{fileName}}</span>
-                            <br>
-                            <v-btn @click="addModel" v-if='!!file'>upload</v-btn>
-                            <v-progress-linear v-if='loading' v-model="percents" color="indigo lighten-1"></v-progress-linear>
-                            <v-alert type="error" :value="error"></v-alert>
-                            <h2 class="font-weight-thin mb-4">Summary</h2>
-                            <v-textarea solo auto-grow name="input-7-1" label="Summary" value="" v-model='summary'></v-textarea>
+                            <h2 class="font-weight-thin mb-4">Description</h2>
+                            <v-textarea solo auto-grow name="description" label="Describe your item" v-model='description'></v-textarea>
                         </v-card>
-                    <v-btn color="primary" @click="e1 = 3">Continue</v-btn>
-                    <v-btn flat @click="e1 = 1">Cancel</v-btn>
+                    <v-btn v-if="!!file" color="primary" @click="e1 = 3" >Continue</v-btn>
+                    <v-btn v-else disabled>Continue</v-btn>
+                    <v-btn flat @click="cancel">Cancel</v-btn>
                 </v-stepper-content>
                 <v-stepper-content step="3">
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-                    <!-- Upload file image -->
                     <v-card class="elevation-0">
                         <h2 class="font-weight-thin mb-4">Select item pic</h2>
-                        <v-btn flat color="indigo lighten-2">
-                        <input  type="file" id='image_upload' accept="image/*" @change="filesChange($event.target.files)">
-                        Select
+                        <v-btn 
+                        :loading="loading4"
+                        :disabled="loading4"
+                        color="blue-grey"
+                        dark
+                        @click.native="loader = 'loading4'">
+                        <input  type="file" id='image_upload' accept="image/*" @change="imagesChange">Select
+                        <v-icon right dark>photo</v-icon>
                         </v-btn>
-                        <!-- Price -->
                         <h2 class="font-weight-thin mb-4">Set the price</h2>
                         <v-text-field type="number" label="Price" :rules='required' class="mb-5" v-model='price'></v-text-field>
-                            <br>
-                            <v-btn @click="addModel" v-if='!!file'>upload</v-btn>
-                            <v-progress-linear v-if='loading' v-model="percents" color="indigo lighten-1"></v-progress-linear>
-                            <v-alert type="error" :value="error"></v-alert>
-                            <h2 class="font-weight-thin mb-4">Summary</h2>
-                            <v-textarea solo auto-grow name="input-7-1" label="Summary" value="" v-model='summary'></v-textarea>
-                        </v-card>
-                    <v-btn color="primary" @click="e1 = 3">Continue</v-btn>
-                    <v-btn flat @click="e1 = 1">Cancel</v-btn>
-                </v-stepper-content>
-                <v-stepper-content step="3">
-=======
->>>>>>> parent of 2e5ab5b... фыа
-=======
->>>>>>> parent of 2e5ab5b... фыа
-=======
->>>>>>> parent of 2e5ab5b... фыа
-                    <v-card class="mb-5" color="grey lighten-1" height="600px">
                     </v-card>              
-                    <v-btn color="primary" to="/">Done</v-btn>                   
-                    <v-btn flat @click="e1 = 2">Cancel</v-btn>
+                    <v-btn v-if='!!file2' to='/' color="primary" @click='allLoaded'>Submit</v-btn>
+                    <v-btn v-else disabled>Submit</v-btn>                   
+                    <v-btn flat @click="cancel">Cancel</v-btn>
                 </v-stepper-content>
             </v-stepper-items>
         </v-stepper>
@@ -116,45 +80,36 @@
 
 
 <script>
-import {storageModelsRef, dbModelsRef} from '@/firebase'
+import {storageModelsRef, storageImagesRef, dbModelsRef} from '@/firebase'
 import {auth} from '../firebase'
 
 export default {
     name: 'AddNewModel',
     data () {
         return {
+            loader: null,
+            loading3: false,
             categories: [ 'Household', 'Gadgets', 'Art', 'Hobby', 'Toys'],
             file: null,
             items: [],
+            file2: null,
+            price: '',
             url: '',
+            urlImg: '',
             e1: null,
             name: '',
             tags: [],
-            summary: '',
+            description: '',
             category: '',
+            uploadTask: null,
             error: '',
-            loading: false,
-            percents: 0,
-            drawer: null,
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
             imageLoad: false,
             modelLoad: false,
+            loading4: false,
+            percents: 0,
+            drawer: null,
             required: [
                 v => !!v || 'Required'
-            ],
-=======
->>>>>>> parent of 2e5ab5b... фыа
-=======
->>>>>>> parent of 2e5ab5b... фыа
-=======
->>>>>>> parent of 2e5ab5b... фыа
-            nameRules: [
-                value => !!value || 'Name is required'
-            ],
-            catRules: [
-                value => !!value || 'Category is required'
             ]
         }
     },
@@ -166,12 +121,17 @@ export default {
         fileName () {
             return this.file.name.split('').slice(0, 15).join('')+"..."
         }
+        
     },
     methods: {
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-
+        filesChange(e){
+            this.file = e.target.files[0]
+            this.addModel('model')
+        },
+        imagesChange(e){
+            this.file2 = e.target.files[0]
+            this.addModel('image')
+        },
         cancel(){
             this.name = ''
             this.category = ''
@@ -180,112 +140,87 @@ export default {
             this.file = null
             this.image = null
             this.tags = []
-        },
-=======
->>>>>>> parent of 2e5ab5b... фыа
-=======
->>>>>>> parent of 2e5ab5b... фыа
-=======
->>>>>>> parent of 2e5ab5b... фыа
-        filesChange(files) {
-            this.file = files[0]
-        },
-
-        addModel() {
-            let that = this
-            if (!this.file) return
-            const uploadTask = storageModelsRef.child(this.file.name).put(this.file)
-            this.url = uploadTask.snapshot.ref.getDownloadURL()
-            uploadTask.on('state_changed', (snapshot) => {
+            },
+        addModel(currentFile) {
+            if (currentFile == 'image'){
+                this.uploadTask = storageImagesRef.child(this.file2.name).put(this.file2)
+            } else {
+                this.uploadTask = storageModelsRef.child(this.file.name).put(this.file)
+            }
+            
+            this.uploadTask.on('state_changed', (snapshot) => {
                 let total = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
                 if (snapshot.state == 'running') {
-                    this.loading = true
-                }
-                if (total == 100) {
-                    this.loading = false
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-                }
-                if (typeof this.urlImg !== 'object') {
-                    if (typeof this.urlImg.i !== 'string') {
-                        this.urlImg = snapshot.ref.getDownloadURL()
-                        this.imgTrue = true
-=======
->>>>>>> parent of 2e5ab5b... фыа
-=======
->>>>>>> parent of 2e5ab5b... фыа
-=======
->>>>>>> parent of 2e5ab5b... фыа
-                }
-            }
-                if (typeof this.url !== 'object') {
-                    if (typeof this.url.i !== 'string') {
-                        this.url = snapshot.ref.getDownloadURL()
+                    if (currentFile == 'image'){
+                        this.loading4 = true
+                    }
+                    else {
+                        this.loading3 = true 
                     }
                 }
-                this.percents = total
+                if (total == 100) {
+                    if (currentFile == 'image'){
+                        this.loading4 = false
+                    }
+                    else {
+                        this.loading3 = false 
+                    }
+                }
+                
+                this.percents = total        
             },
-            function (error) {
-                that.error = error
+            (error) => {
+                this.error = error.message 
             },
-
             () => {
                 if (currentFile == 'image') {
-                    this.urlImg = uploadTask.snapshot.ref.getDownloadURL()
+                    this.urlImg = this.uploadTask.snapshot.ref.getDownloadURL()
                     this.imageLoad = true
                 } else {
-                    this.url = uploadTask.snapshot.ref.getDownloadURL()
+                    this.url = this.uploadTask.snapshot.ref.getDownloadURL()
                     this.modelLoad = true
                 }
-            function ()  {
-                that.error = ''
-                that.percents = 0
-                console.log('pushed!')
-                dbModelsRef.push({
-                    name: that.name,
-                    category: that.category,
-                    tags: that.tags,
-                    summary: that.summary,
-                    url: that.url['i']
-                })
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-            }
-
-=======
->>>>>>> parent of 2e5ab5b... фыа
-=======
->>>>>>> parent of 2e5ab5b... фыа
-=======
->>>>>>> parent of 2e5ab5b... фыа
+             this.error = ''
+             this.percents = 0
             })
+        },
+        allLoaded() {
+            if (this.imageLoad&&this.modelLoad) {
+                console.log('pushed')
+                dbModelsRef.push({
+                    description: this.description,
+                    price: this.price,
+                    name: this.name,
+                    category: this.category,
+                    tags: this.tags,
+                    urlImg: this.urlImg['i'],
+                    url: this.url['i']
+                })
+            }
         },
         remove (item) {
             this.tags.splice(this.tags.indexOf(item), 1)
             this.tags = [...this.tags]
         }
+    },
+    watch: {
+      loader () {
+        const l = this.loader
+        this[l] = !this[l]
+
+        setTimeout(() => (this[l] = false), 3000)
+
+        this.loader = null
+      }
     }
 }
 </script>
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 <style>
     #step{
         margin: 200px 0 50px 0;
     }
 #model_upload, #image_upload {
-=======
-=======
->>>>>>> parent of 2e5ab5b... фыа
-=======
->>>>>>> parent of 2e5ab5b... фыа
-<style scoped>
-#file_upload {
->>>>>>> parent of 2e5ab5b... фыа
     position: absolute;
     top: 0;
     right: 0;
@@ -298,4 +233,10 @@ export default {
     cursor: inherit;
     display: block;
   }
+
+  @media screen and (max-width: 1000px){
+    #step {
+      margin: 125px 0 50px 0;
+    }
+  }  
 </style>

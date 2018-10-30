@@ -7,7 +7,7 @@
       app
     >
         <v-list dense>
-            <v-avatar class="my-4"><img :src="user.photoURL"></v-avatar><br>
+            <v-avatar class="my-4"  :size='65'><img :src="user.photoURL"></v-avatar><br>
             <strong>{{ user.displayName }}</strong><br>
             <p>{{ user.email }}</p>
             <v-divider class="mb-4 v-divider theme dark"></v-divider>
@@ -43,39 +43,58 @@
                     <v-list-tile-title>Settings</v-list-tile-title>
                 </v-list-tile-content>
             </v-list-tile>
-            <v-btn color="primary"  @click="signOut" dark>logout</v-btn>
+            <v-btn color="#00bfff"  @click="signOut" dark>logout</v-btn>
         </v-list>   
     </v-navigation-drawer>
 
 
-    <v-toolbar color="primary" dark fixed app >
-      <v-toolbar-title>3DWorld</v-toolbar-title>
-      <v-flex text-center>
-        <v-btn flat color="white cyan--text" to="/">Home</v-btn>
-        <v-btn flat color="white cyan--text" to="/">Categories</v-btn>
-        <v-btn flat color="white cyan--text" to="/">Groups</v-btn>
-        <v-btn flat color="white cyan--text" to="/">About Us</v-btn>
-      </v-flex>
-       <v-text-field
-        flat
-        solo-inverted
-        append-icon="search"
-        label="Search"
-        class="mt-2"
-      ></v-text-field>      <v-spacer></v-spacer>
+    <v-toolbar  dark app scroll-off-screen id='toolbar'>
+      <v-menu offset-y id='menu' nudge-width='200'>
+        <a slot="activator"><v-icon>view_module</v-icon></a>   
+        <v-list>
+          <v-list-tile v-for="(item, i) in categories" :key="i" @click=''>
+            <v-list-tile-title>{{ item }}</v-list-tile-title>
+          </v-list-tile>
+        </v-list>
+      </v-menu>
+      <v-flex id='toolflex' class='d-inline-flex align-center'>
+        <v-toolbar-title id='title' class='mr-5' @click='home'>3DWorld</v-toolbar-title>
+        <v-btn flat to="/">Home</v-btn>
+        <v-btn flat to="/groups">Groups</v-btn>
+        <v-btn flat to="/about">About Us</v-btn>
+        <v-menu offset-y>
+          <v-btn flat slot="activator" dark>Categories</v-btn>       
+          <v-list>
+            <v-list-tile v-for="(item, i) in categories" :key="i" @click=''>
+                <v-list-tile-title>{{ item }}</v-list-tile-title>
+              </v-list-tile>
+            </v-list>
+          </v-menu>
+          <v-text-field 
+          flat
+          solo-inverted
+          append-icon="search"
+          label="Search"
+          class="mx-5 mt-2"
+          ></v-text-field>
+      </v-flex>       
+      <v-spacer id='spacer'></v-spacer>
       <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
     </v-toolbar>
  </div>
 </template>
 
 <script>
-import {auth} from '../firebase'
+import {auth, dbModelsRef} from '../firebase'
+
 
 export default {
   name: 'RootHeader',
   data() {
     return {
-      drawer: null
+      categories: [ 'Household', 'Gadgets', 'Art', 'Hobby', 'Toys'],
+      drawer: null,
+      width: null
     }
   },
 
@@ -86,6 +105,11 @@ export default {
   },
 
   methods: {
+    home() {
+      if (window.innerWidth <= 1000){
+        this.$router.replace('/')
+      }
+    },
     signOut () {
       auth.signOut()
       this.$root.$data.user = auth.currentUser
@@ -94,3 +118,45 @@ export default {
   }
 }
 </script>
+
+
+<style>
+  #toolbar{
+    background: linear-gradient(10deg, #1560bd, #00bfff);
+  }
+  #menu{
+    display: none;
+  }
+   #title{
+      font-size: 30px;
+    }
+
+  @media screen and (max-width: 1000px){
+    #carousel {
+      height: 400px;
+    }
+    #spacer{
+      display: none;
+    }
+    #toolflex .v-btn{
+      display: none;   
+    }
+    #toolflex .v-text-field{
+      display: none;   
+    }
+    #menu{
+    display: inline;
+    }
+    #title{
+      font-size: 40px;
+      cursor: pointer;
+      margin-left: 20px;
+    }
+
+  @media screen and (max-width: 500px){
+    #carousel {
+      height: 200px;
+    }
+  }
+  } 
+</style>

@@ -7,10 +7,16 @@ import Login from '@/components/Login'
 import Liked from '@/components/Liked'
 import Profile from '@/components/Profile'
 import Settings from '@/components/Settings'
+import Itemview from '@/components/Itemview'
 Vue.use(Router)
 
 export default new Router({
   routes: [
+    {
+      path:'/itemview',
+      name: 'Itemview',
+      component: Itemview
+    },
     {
       path: '/',
       name: 'home',

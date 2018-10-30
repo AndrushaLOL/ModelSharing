@@ -1,9 +1,9 @@
 <template>
-    <v-app id="inspire">
+  <v-app id="inspire">
     <v-content>
       <v-container fluid fill-height>
         <v-layout align-center justify-center>
-          <v-flex xs12 sm8 md4>
+          <v-flex xs12 sm10 md10 lg8>
             <v-card class="elevation-12">
               <v-toolbar dark color="primary">
                 <v-toolbar-title>Registration form</v-toolbar-title>    
@@ -14,16 +14,16 @@
                       <v-container>
                         <v-layout row wrap>
                           <v-flex xs12 sm6>
-                            <v-text-field  prepend-icon="person" :rules='[rules.required]' name="name" label="Enter your first Name" v-model="name"  type="text" ></v-text-field>
+                            <v-text-field  :success='succes(this.personalName)' prepend-icon="person" :rules='[rules.required]' name="name" label="Enter your first Name" v-model="personalName"  type="text" ></v-text-field>
                           </v-flex>
                           <v-flex xs12 sm6>
-                            <v-text-field  prepend-icon="person" name="surname" :rules='[rules.required]' label="Enter your second Name" v-model="surname"  type="text"></v-text-field> 
+                            <v-text-field  prepend-icon="person" :success='succes(this.surname)' name="surname" :rules='[rules.required]' label="Enter your second Name" v-model="surname"  type="text"></v-text-field> 
                           </v-flex>
                           <v-flex xs12 sm6>
-                            <v-text-field  prepend-icon="place" name="country" label="Country" v-model="country"  type="text"></v-text-field> 
+                            <v-text-field  prepend-icon="place" name="country" :success='succes(this.country) 'label="Country" v-model="country"  type="text"></v-text-field> 
                           </v-flex>
                           <v-flex xs12 sm6>
-                            <v-text-field  prepend-icon="phone" name="phone" label="Phone number" v-model="phone"  type="text"></v-text-field> 
+                            <v-text-field  prepend-icon="phone" name="phone" :success='succes(this.phone)' label="Phone number" v-model="phone"  type="number"></v-text-field> 
                           </v-flex>
                         </v-layout>
                       </v-container>
@@ -31,19 +31,19 @@
                       <v-container>
                         <v-layout row wrap>
                           <v-flex xs12 sm6>
+                            <v-text-field  prepend-icon="person" name="login" :success='succes(this.displayName)' label="Enter your login" v-model="displayName" :rules="[rules.required]" type="text"></v-text-field>
+                          </v-flex>
+                          <v-flex xs12 sm6>
                             <v-text-field prepend-icon="photo" name="photoURL" label="Enter your photoUrl" v-model="photoURL"  type="photoURL"></v-text-field>
                           </v-flex>
                           <v-flex xs12 sm6>
-                            <v-text-field  prepend-icon="person" name="login" label="Enter your login" v-model="displayName" :rules="[rules.required]" type="text"></v-text-field>
-                          </v-flex>
-                          <v-flex xs12 sm6>
-                            <v-text-field  prepend-icon="email" name="email" label="Enter your email" :rules="[rules.required, rules.email]"
+                            <v-text-field  prepend-icon="email" name="email" label="Enter your email" :success='succes(this.email)' :rules="[rules.requiredEmail, rules.email]"
                             v-model="email"  @input="err=''" type="text"></v-text-field>
                           </v-flex>
                           <v-flex xs12 sm6>
-                            <v-text-field id="password" prepend-icon="lock" name="password" label="Password"
+                            <v-text-field id="password" prepend-icon="lock" name="password" :success='succes(this.password)' label="Password"
                             counter
-                            :rules="[rules.counterMin, rules.counterMax, rules.required]"
+                            :rules="[rules.password]"
                             v-model="password" 
                             @keyup.enter="signIn" 
                             @input="err = ''"
@@ -63,8 +63,7 @@
                 </v-form>
               </v-card-text>
               <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="primary" @click="signUp" class="mr-3">Sign Up</v-btn>
+                <v-btn color="primary" @click="signUp" class="mr-3 ml-4">Sign Up</v-btn>
                 <small class="mr-5">Already have an account? <router-link to="/login">Login</router-link></small>
               </v-card-actions>
             </v-card>
@@ -76,7 +75,7 @@
 </template>
 
 <script>
-import {auth, usersRef} from '../firebase'
+import {auth, dbUsersRef} from '../firebase'
 export default {
   name: 'Register',
   data () {
@@ -84,17 +83,21 @@ export default {
       email: '',
       password: '',
       displayName: '',
-      name: '',
+      personalName: '',
       surname: '',
       phone: '',
+      count: 0,
       country: '',
       show: false,
       photoURL: null,
       err: '',
       rules: {
-        required: value => !!value  || 'Required',
-        counterMax: value => value.length <= 20 || 'Max 20 characters',
-        counterMin: value => value.length >= 8 || 'Min 8 characters',
+        password: value => {
+          const pattern = /^[a-z0-9_-]{6,18}$/ 
+          return pattern.test(value) || 'Must be 6-18 characters' 
+        },
+        required: value => !!value || 'Required',
+        requiredEmail: value => !!value  || 'Required, example@gmail.com',
         email: value => {
           const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
           return pattern.test(value) || 'Invalid e-mail'
@@ -108,7 +111,11 @@ export default {
     }
   },
   methods: {
+    succes(value){
+      return value !== ''
+    },
     signUp () {
+      this.count += 1
       if (this.user) {
         this.err = 'you already logined'
         this.$router.replace('/')
@@ -124,6 +131,13 @@ export default {
           this.err = err.message
           this.displayName
         })
+      dbUsersRef.push({
+        personalName: this.personalName,
+        surname: this.surname,
+        phone: this.phone,
+        country: this.country,
+        count: this.count
+      })
       },
       updateProfile () {
        auth.currentUser.updateProfile({

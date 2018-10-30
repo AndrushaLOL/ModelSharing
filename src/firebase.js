@@ -13,13 +13,13 @@ const app = firebase.initializeApp(config)
 
 
 export const provider = new firebase.auth.GoogleAuthProvider()
-export const provider2 = new firebase.auth.GithubAuthProvider()
 export const provider3 = new firebase.auth.FacebookAuthProvider()
 
 
-
+export const storageImagesRef = app.storage().ref().child('images')
 export const storageModelsRef = app.storage().ref().child('models')
 export const dbModelsRef = app.database().ref('models/')
+export const dbUsersRef = app.database().ref('users/')
 export const auth = app.auth()
 
 

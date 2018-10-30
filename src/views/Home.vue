@@ -1,74 +1,91 @@
 <template>
 <v-app id="inspire">
-    <div v-if='!user'>
-    	<v-toolbar color="primary" dark fixed app>
-      		<v-toolbar-title>3DWorld</v-toolbar-title>
-    	    <v-flex text-lg-center>
-    	    	<v-btn flat color="white cyan--text" to="/">Home</v-btn>
-    	    	<v-btn flat color="white cyan--text" to="/">Categories</v-btn>
-    	    	<v-btn flat color="white cyan--text" to="/">Groups</v-btn>
-    	    	<v-btn flat color="white cyan--text" to="/">About Us</v-btn>	
-    	    </v-flex>
-      		<v-spacer></v-spacer>
-    		<v-btn color="light-blue darken-1 white--text" to="/login">Login</v-btn>
-        </v-toolbar>	
-    </div>
-    <div v-if ="drawer">
-    	<v-flex xs6 class="ml-5">
-   	   		<v-card class="my-5">
-    	 		<v-card-title primary-title>
-    				<h1 class="display-1 font-weight-thin">Weekly top</h1>
-    			</v-card-title>
-    			<v-card-actions>	
-    				<v-carousel id="carousel">
-    					<v-carousel-item
-      					v-for="(item) in sanya_items"
-      					:key="item.id"
-      					:src="item.src"
-    					></v-carousel-item>
-  					</v-carousel>
-  			    </v-card-actions>
-  			</v-card>
-  		</v-flex>
-    </div>
-    <div v-else>
-   		 <v-flex xs12 sm6 offset-sm3>
-   		 	<v-card style='margin: 100px 0 50px 0'>
-    			<v-card-title primary-title>
-    				<h1 class="display-1 font-weight-thin">Weekly top</h1>
-    			</v-card-title>
-    			<v-card-actions>	
-    				<v-carousel id="carousel">
-    					<v-carousel-item
-      						v-for="(item) in sanya_items"
-      						:key="item.id"
-      						:src="item.src"
-    					></v-carousel-item>
-  					</v-carousel>
-  				 </v-card-actions>
-  			</v-card>
-				<v-card v-for='(item,i) in items' :key='i' class='mb-2 blue lighten-5'>
-					<v-card-title>{{item.name}}</v-card-title>
-					<v-card-text>
-						<span>category: {{item.category}}</span>
-						<br>
-						<span>tags: {{item.tags.join(' ')}}</span><br>
-					</v-card-text>
-					<p>{{item.summary}}</p>
-				</v-card>
-  		</v-flex>
-  	</div>
+  <div v-if='!user'>
+    <v-toolbar  dark app scroll-off-screen id='toolbar'>
+      <v-menu offset-y id='menu' nudge-width='200'>
+        <a slot="activator"><v-icon>view_module</v-icon></a>   
+        <v-list>
+          <v-list-tile v-for="(item, i) in categories" :key="i" @click=''>
+            <v-list-tile-title>{{ item }}</v-list-tile-title>
+          </v-list-tile>
+        </v-list>
+      </v-menu>
+      <v-flex id='toolflex' class='d-inline-flex align-center'>
+        <v-toolbar-title id='title' class='mr-5' @click='home'>3DWorld</v-toolbar-title>
+        <v-btn flat to="/">Home</v-btn>
+        <v-btn flat to="/groups">Groups</v-btn>
+        <v-btn flat to="/about">About Us</v-btn>
+        <v-menu offset-y>
+        <v-btn flat slot="activator" dark>Categories</v-btn>       
+        <v-list>
+          <v-list-tile v-for="(item, i) in categories" :key="i" @click=''>
+            <v-list-tile-title>{{ item }}</v-list-tile-title>
+          </v-list-tile>
+        </v-list>
+        </v-menu>
+        <v-text-field
+        flat
+        solo-inverted
+        append-icon="search"
+        label="Search"
+        class="mx-5 mt-2"
+        v-model='search'
+        ></v-text-field> 
+      </v-flex>    
+      <v-spacer id='spacer2'></v-spacer>
+    	<v-btn color="indigo darken-1 id='login' white--text" to="/login">Login</v-btn>
+    </v-toolbar>	
+  </div>
+  <v-flex xs12 sm8 offset-sm2 md8 offset-md2 lg6 offset-lg3>
+    <v-card id ="top">
+      <v-card-title primary-title>
+        <h1 class="display-1 font-weight-thin">Top 5 of the week</h1>
+      </v-card-title>
+      <v-card-actions>  
+        <v-carousel id="carousel">
+          <v-carousel-item
+          v-for="(item) in sanya_items"
+          :key="item.id"
+          :src="item.src"
+          ></v-carousel-item>
+        </v-carousel>
+      </v-card-actions>
+    </v-card>
+  </v-flex>
+  <v-flex md12>
+    <v-container fluid grid-list-xl>
+      <v-layout row wrap >
+        <v-flex lg4 md6 sm12 xs12 v-for='(item,i) in itemList' :key='i' class='my-5'>
+          <v-hover>  
+            <v-card color='white' to='/itemview' id="card" slot-scope='{ hover }' :class="`elevation-${hover ? 20 : 7}`">
+              <v-card-text>
+                <v-avatar :size='215' tile><img :src="item.urlImg"></v-avatar>
+                <h6 class='title font-weight-regular pt-5'>{{item.name}}</h6>
+                <span>category: {{item.category}}</span>
+                <br>
+                <span>tags: {{item.tags.join(' ')}}</span><br>
+              </v-card-text>
+              <p>{{item.description}}</p>
+              <h3 class='font-weight-regular'>Price: {{ item.price }}</h3>
+            </v-card>
+          </v-hover>
+        </v-flex>
+      </v-layout>  
+    </v-container>
+  </v-flex>    
 </v-app>
 </template>
 
 <script>
 import HelloWorld from '@/components/HelloWorld.vue'
-import {auth, dbModelsRef} from '../firebase'
+import {auth, dbModelsRef, storageImagesRef} from '../firebase'
 
 export default {
   name: 'home',
   data(){
   	return {
+      categories: [ 'Household', 'Gadgets', 'Art', 'Hobby', 'Toys'],
+      hideTool: false,
   		sanya_items: [
           {
             src: 'https://scottwilloughby3dg.files.wordpress.com/2014/10/3d-model-face.jpg', id:'1'
@@ -84,7 +101,8 @@ export default {
           }
 		],
 		items: [],
-  		drawer: null
+    drawer: null,
+    search: ''
   	}
   },
   components: {
@@ -94,24 +112,35 @@ export default {
   computed: {
     user () {
       return this.$root.$data.user
+    },
+    itemList() {
+      return this.items.filter( (item) => (item.name.toLowerCase().indexOf(this.search.toLowerCase()) != -1))
     }
   },
   methods: {
+    home() {
+      if (window.innerWidth <= 1000){
+        this.$router.replace('/')
+      }
+    },
     signOut () {
       auth.signOut()
       this.$root.$data.user = auth.currentUser
     }
 	},
 	created () {
+    
 		dbModelsRef.on('value', (snapshot) => {
 			let items = []
-			snapshot.forEach(element => {
-        	let { category, tags, url, name, summary } = element.val()
+			snapshot.forEach( (element) => {
+        	let { category, tags, url, urlImg, name, description, price} = element.val()
         	items.push({
-          	category: category || 'piski',
+          	category: category || 'no category',
           	src: url || 'url_to_not_avaliable',
+            urlImg: urlImg,
           	name: name || 'no name',
-          	summary: summary || 'no summary',
+          	price: price || 'no price',
+            description: description || 'no description',
          		tags: tags || ['no tags']
         	})
 		})
@@ -121,3 +150,30 @@ export default {
 }
 </script>
 
+<style>
+
+  #card:hover{
+    cursor: pointer;
+  }
+  #card{
+    height: 420px;
+  }
+  #top{
+   margin: 100px 0 50px 0;
+  }
+
+
+  @media screen and (max-width: 1000px){
+    #top{
+      margin-bottom: 0px;
+    }
+
+  }
+
+  @media screen and (max-width: 600px){
+    #carousel {
+      height: 200px;
+    }
+  }
+
+</style>

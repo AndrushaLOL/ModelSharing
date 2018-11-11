@@ -40,6 +40,7 @@
                 </a>
                 <v-btn color="primary" @click="signIn" class="mr-3">Login</v-btn>
                 <small class="mr-5">Do not have an account? <router-link to="/register">Register</router-link></small>
+                <v-btn color="success" to='/'>HOME</v-btn>
               </v-card-actions>
             </v-card>
           </v-flex>

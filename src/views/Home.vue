@@ -2,8 +2,8 @@
 <v-app id="inspire">
   <div v-if='!user'>
     <v-toolbar  dark app scroll-off-screen id='toolbar'>
-      <v-menu offset-y id='menu' nudge-width='200'>
-        <a slot="activator"><v-icon>view_module</v-icon></a>   
+      <v-menu offset-y id='menu'>
+        <v-icon slot="activator">view_module</v-icon> 
         <v-list>
           <v-list-tile v-for="(item, i) in categories" :key="i" @click=''>
             <v-list-tile-title>{{ item }}</v-list-tile-title>
@@ -33,7 +33,7 @@
         ></v-text-field> 
       </v-flex>    
       <v-spacer id='spacer2'></v-spacer>
-    	<v-btn color="indigo darken-1 id='login' white--text" to="/login">Login</v-btn>
+    	<v-btn color="indigo darken-1 white--text" id='login' to="/login">Login</v-btn>
     </v-toolbar>	
   </div>
   <v-flex xs12 sm8 offset-sm2 md8 offset-md2 lg6 offset-lg3>
@@ -43,10 +43,12 @@
       </v-card-title>
       <v-card-actions>  
         <v-carousel id="carousel">
-          <v-carousel-item
-          v-for="(item) in sanya_items"
-          :key="item.id"
-          :src="item.src"
+          <v-carousel-item 
+          @click='view(item)'
+          v-for="(item, i) in items"
+          :key="i"
+          :src="item.urlImg"
+          id='carouselItem'
           ></v-carousel-item>
         </v-carousel>
       </v-card-actions>
@@ -54,19 +56,19 @@
   </v-flex>
   <v-flex md12>
     <v-container fluid grid-list-xl>
-      <v-layout row wrap >
-        <v-flex lg4 md6 sm12 xs12 v-for='(item,i) in itemList' :key='i' class='my-5'>
-          <v-hover>  
-            <v-card color='white' to='/itemview' id="card" slot-scope='{ hover }' :class="`elevation-${hover ? 20 : 7}`">
+      <v-layout row wrap>
+        <v-flex lg4 md6 sm12 xs12 v-for='(item,i) in itemList' :key='i' class='my-5' @click='view(item)'>
+          <v-hover >  
+            <v-card color='white' :id="`card${i}`" class='card' slot-scope='{ hover }' :class="`elevation-${hover ? 20 : 7}` ">
               <v-card-text>
                 <v-avatar :size='215' tile><img :src="item.urlImg"></v-avatar>
-                <h6 class='title font-weight-regular pt-5'>{{item.name}}</h6>
+                <h1 class='title font-weight-regular pt-5'>{{item.name}}</h1>
                 <span>category: {{item.category}}</span>
                 <br>
                 <span>tags: {{item.tags.join(' ')}}</span><br>
               </v-card-text>
               <p>{{item.description}}</p>
-              <h3 class='font-weight-regular'>Price: {{ item.price }}</h3>
+              <h3 class='font-weight-regular'>Price: {{ item.price }} RUB</h3>
             </v-card>
           </v-hover>
         </v-flex>
@@ -99,25 +101,30 @@ export default {
           {
             src: 'https://www.nyfa.edu/student-resources/wp-content/uploads/2015/01/4_arms_guy_by_slocik-d4siu3e.jpg', id:'4'
           }
-		],
-		items: [],
-    drawer: null,
-    search: ''
+		  ],
+		  items: [],
+      id: null,
+      drawer: null,
+      search: '',
   	}
   },
   components: {
-    HelloWorld
-  },
+    HelloWorld,
+    },
 
   computed: {
     user () {
       return this.$root.$data.user
     },
     itemList() {
-      return this.items.filter( (item) => (item.name.toLowerCase().indexOf(this.search.toLowerCase()) != -1))
+      return this.items.reverse().filter( (item) => (item.name.toLowerCase().indexOf(this.search.toLowerCase()) != -1))
     }
   },
   methods: {
+    view(el){
+      this.id = el.key
+      this.$router.push('itemview/' + this.id)
+    },
     home() {
       if (window.innerWidth <= 1000){
         this.$router.replace('/')
@@ -135,13 +142,14 @@ export default {
 			snapshot.forEach( (element) => {
         	let { category, tags, url, urlImg, name, description, price} = element.val()
         	items.push({
-          	category: category || 'no category',
-          	src: url || 'url_to_not_avaliable',
+            key: element.key,
+          	category: category,
+          	src: url,
             urlImg: urlImg,
-          	name: name || 'no name',
-          	price: price || 'no price',
-            description: description || 'no description',
-         		tags: tags || ['no tags']
+          	name: name,
+          	price: price ,
+            description: description ,
+         		tags: tags || ['No tags']
         	})
 		})
 		this.items = items
@@ -151,11 +159,13 @@ export default {
 </script>
 
 <style>
-
-  #card:hover{
+  #carousel:hover{
     cursor: pointer;
   }
-  #card{
+  .card:hover{
+    cursor: pointer;
+  }
+  .card{
     height: 420px;
   }
   #top{
@@ -163,13 +173,12 @@ export default {
   }
 
 
-  @media screen and (max-width: 1000px){
+  @media screen and (max-width: 1050px){
     #top{
       margin-bottom: 0px;
     }
 
   }
-
   @media screen and (max-width: 600px){
     #carousel {
       height: 200px;

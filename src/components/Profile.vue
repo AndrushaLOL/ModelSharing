@@ -1,7 +1,7 @@
 <template>
 	<v-flex xs12 sm6 offset-sm3	class='my-5'>
 		<v-card id='profCard'>
-			<v-avatar class="my-4" :size="250" :tile="true"><img :src="user.photoURL"></v-avatar><br>
+			<v-avatar class="my-4" :size="250" tile><img :src="user.photoURL"></v-avatar><br>
 			<h1 class='d-inline'>Name: </h1>
 			<h1 class='font-weight-thin d-inline'>{{ items.personalName }}</h1><br>
 			<h1 class='d-inline'>Surname: </h1>

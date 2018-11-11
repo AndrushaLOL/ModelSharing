@@ -5,6 +5,7 @@
       right
       temporary
       app
+      width='240'
     >
         <v-list dense>
             <v-avatar class="my-4"  :size='65'><img :src="user.photoURL"></v-avatar><br>
@@ -49,8 +50,8 @@
 
 
     <v-toolbar  dark app scroll-off-screen id='toolbar'>
-      <v-menu offset-y id='menu' nudge-width='200'>
-        <a slot="activator"><v-icon>view_module</v-icon></a>   
+      <v-menu offset-y id='menu'>
+        <v-icon  slot="activator">view_module</v-icon> 
         <v-list>
           <v-list-tile v-for="(item, i) in categories" :key="i" @click=''>
             <v-list-tile-title>{{ item }}</v-list-tile-title>
@@ -94,7 +95,7 @@ export default {
     return {
       categories: [ 'Household', 'Gadgets', 'Art', 'Hobby', 'Toys'],
       drawer: null,
-      width: null
+      width: null,
     }
   },
 
@@ -131,7 +132,7 @@ export default {
       font-size: 30px;
     }
 
-  @media screen and (max-width: 1000px){
+  @media screen and (max-width: 1050px){
     #carousel {
       height: 400px;
     }
@@ -146,6 +147,9 @@ export default {
     }
     #menu{
     display: inline;
+    }
+    #menu:click{
+    opacity: 0.5;
     }
     #title{
       font-size: 40px;

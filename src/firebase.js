@@ -1,5 +1,6 @@
 import firebase from 'firebase'
 
+
 const config = {
     apiKey: "AIzaSyDCH51vUuGZ3z63pMCKes0OS3gDVafw6uQ",
     authDomain: "model-sharing.firebaseapp.com",

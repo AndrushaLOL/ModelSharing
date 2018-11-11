@@ -1,8 +1,8 @@
-    <template>
+<template>
     <div  v-if='!!user'>
-    <v-flex xs12 sm10 offset-sm1 md6 offset-md3 >
-        <v-stepper v-model="e1" id='step'>
-            <v-stepper-header>
+    <v-flex xs12 sm10 offset-sm1 md6 offset-md3>
+        <v-stepper v-model="e1"  id='step'>
+            <v-stepper-header id='stepHeader'>
                 <v-stepper-step :complete="e1 > 1" step="1">Information</v-stepper-step>
                 <v-divider></v-divider>
                 <v-stepper-step :complete="e1 > 2" step="2">Upload a file</v-stepper-step>
@@ -39,38 +39,50 @@
                             <v-btn color="blue-grey"
                             :loading="loading3"
                             :disabled="loading3" 
-                            class="white--text" 
+                            class="white--text mb-5" 
                             @click.native="loader = 'loading3'"
                             >
                             <input  id='model_upload' type="file" @change="filesChange">Upload   
                             <v-icon right dark>cloud_upload</v-icon>
                             </v-btn>
-                            <span v-if="!!file">{{fileName}}</span>
+                            <span v-if="!!file" class="ml-4">{{fileName}}</span>
                             <h2 class="font-weight-thin mb-4">Description</h2>
-                            <v-textarea solo auto-grow name="description" label="Describe your item" v-model='description'></v-textarea>
+                            <v-textarea solo
+                            :rules='descipt' 
+                            class='mb-5' 
+                            auto-grow 
+                            name="description" 
+                            label="Describe your item"
+                            counter 
+                            v-model='description'>           
+                            </v-textarea>
                         </v-card>
-                    <v-btn v-if="!!file" color="primary" @click="e1 = 3" >Continue</v-btn>
+                    <v-btn v-if='!!file' color="primary" @click="e1 = 3" >Continue</v-btn>
                     <v-btn v-else disabled>Continue</v-btn>
                     <v-btn flat @click="cancel">Cancel</v-btn>
                 </v-stepper-content>
                 <v-stepper-content step="3">
                     <v-card class="elevation-0">
-                        <h2 class="font-weight-thin mb-4">Select item pic</h2>
+                        <h2 class="font-weight-thin mb-5">Select item pic</h2>
                         <v-btn 
+                        class='mb-5'
                         :loading="loading4"
                         :disabled="loading4"
                         color="blue-grey"
                         dark
                         @click.native="loader = 'loading4'">
-                        <input  type="file" id='image_upload' accept="image/*" @change="imagesChange">Select
+                        <input  type="file" id='image_upload' multiple accept="image/*" @change="imagesChange">Select
                         <v-icon right dark>photo</v-icon>
                         </v-btn>
-                        <h2 class="font-weight-thin mb-4">Set the price</h2>
-                        <v-text-field type="number" label="Price" :rules='required' class="mb-5" v-model='price'></v-text-field>
+                        <img v-if='!!file2' :src='imageSrc'  class='ml-1' id='itemImage' />
+                        <h2 class="font-weight-thin mb-5">Set the price</h2>
+                        <v-text-field v-if='!!file2' type="number" label="Price"  :rules='required' class="mb-2" v-model='price'></v-text-field>
+                        <v-text-field v-else type="number" label="Price"  :rules='required' class="mb-5" v-model='price'></v-text-field>
                     </v-card>              
-                    <v-btn v-if='!!file2' to='/' color="primary" @click='allLoaded'>Submit</v-btn>
-                    <v-btn v-else disabled>Submit</v-btn>                   
-                    <v-btn flat @click="cancel">Cancel</v-btn>
+                    <v-btn v-if='!!file2' to='/' color="primary" @click='push'>Submit</v-btn>
+                    <v-btn v-else disabled class='mt-5'>Submit</v-btn>
+                    <v-btn v-if='!!file2' class='mt-2' flat @click="cancel">Cancel</v-btn>                   
+                    <v-btn v-else class='mt-5' flat @click="cancel">Cancel</v-btn>
                 </v-stepper-content>
             </v-stepper-items>
         </v-stepper>
@@ -87,6 +99,7 @@ export default {
     name: 'AddNewModel',
     data () {
         return {
+            imageSrc: null,
             loader: null,
             loading3: false,
             categories: [ 'Household', 'Gadgets', 'Art', 'Hobby', 'Toys'],
@@ -110,6 +123,9 @@ export default {
             drawer: null,
             required: [
                 v => !!v || 'Required'
+            ],
+            descipt: [
+                v => v.length > 40 ? !!v : 'Min 40 characters'
             ]
         }
     },
@@ -130,6 +146,15 @@ export default {
         },
         imagesChange(e){
             this.file2 = e.target.files[0]
+            if (this.file2) {
+                const reader = new FileReader()
+                const vm = this
+                reader.onload = (e) => {
+                    vm.imageSrc = e.target.result
+                }
+
+                reader.readAsDataURL(this.file2)
+             }
             this.addModel('image')
         },
         cancel(){
@@ -138,7 +163,7 @@ export default {
             this.description = ''
             this.e1 = 1
             this.file = null
-            this.image = null
+            this.file2 = null
             this.tags = []
             },
         addModel(currentFile) {
@@ -184,7 +209,7 @@ export default {
              this.percents = 0
             })
         },
-        allLoaded() {
+        push() {
             if (this.imageLoad&&this.modelLoad) {
                 console.log('pushed')
                 dbModelsRef.push({
@@ -219,6 +244,7 @@ export default {
 <style>
     #step{
         margin: 200px 0 50px 0;
+        height: 570px;
     }
 #model_upload, #image_upload {
     position: absolute;
@@ -234,9 +260,38 @@ export default {
     display: block;
   }
 
-  @media screen and (max-width: 1000px){
-    #step {
-      margin: 125px 0 50px 0;
-    }
+  #itemImage{
+    width: 130px;
+    height: 130px;
   }  
+
+
+
+
+
+  @media screen and (min-width: 375px) and (max-width: 750px) and (min-height: 750px){
+    #step {
+      margin: 130px 0 0 0;
+    }
+  }
+  @media screen and (min-width: 375px) and (max-width: 750px) and (max-height: 750px){
+    #step{
+        margin: 100px 0 0 0;
+    }
+  }
+  @media screen and (max-width: 360px) and (max-height: 750px){
+    #step {
+        margin: 65px 0 0 0;
+        height: 560px;
+    }
+  }
+  @media screen and (max-width: 320px){
+    #step {
+        margin: 50px 0 0 0;
+        height: 518px;
+    }
+    #stepHeader {
+        height: 40px
+    }
+  }   
 </style>
